@@ -3,14 +3,16 @@ package modular_fighters
 import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.ShieldAPI
+import lunalib.lunaRefit.LunaRefitManager
 import modular_fighters.components.chassis.DebugChassis
+import modular_fighters.misc.ModularFightersRefitButton
 import modular_fighters.misc.ReflectionUtils
 import modular_fighters.modifier.SpecModifier
 
 class ModularFightersModPlugin : BaseModPlugin() {
 
     override fun onApplicationLoad() {
-
+        LunaRefitManager.addRefitButton(ModularFightersRefitButton())
     }
 
     override fun onGameLoad(newGame: Boolean) {

@@ -3,6 +3,7 @@
        
     ],
     "builtInMods": [
+      "modular_fighters_hullmod",
       "no_weapon_flux",
     ],
     "center": [
