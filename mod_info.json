@@ -1,0 +1,25 @@
+{
+    "id":"modular_fighters", # For the convenience of troubleshooters, include your name and the mod name, not just an acronym.
+	"name":"Modular Fighters", # Displayed to the player
+	"author":"Lukas04",
+    "utility":"false",
+	"version":"1.0.0",
+	"description":"Enables the creation of fully customised fighters.",
+    "gameVersion": "0.97a-RC10",
+  	"jars":["jars/ModularFighters.jar"],
+  	"modPlugin":"modular_fighters.ModularFightersModPlugin",
+	"dependencies": [
+		{
+		  "id": "lunalib",
+		  "name": "LunaLib"
+		},
+		{
+		  "id": "MagicLib",
+		  "name": "MagicLib"
+		},
+		{
+		  "id": "shaderLib",
+		  "name": "GraphicsLib"
+		},
+  ],
+}
