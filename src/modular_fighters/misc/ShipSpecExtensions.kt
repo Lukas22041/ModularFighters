@@ -1,4 +1,4 @@
-package modular_fighters
+package modular_fighters.misc
 
 import com.fs.starfarer.api.combat.ShieldAPI.ShieldType
 import com.fs.starfarer.api.combat.ShipHullSpecAPI

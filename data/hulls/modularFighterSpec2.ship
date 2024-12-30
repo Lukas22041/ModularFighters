@@ -1,0 +1,33 @@
+{
+    "bounds": [
+       
+    ],
+    "builtInMods": [
+      "no_weapon_flux",
+    ],
+    "center": [
+        15,
+        13
+    ],
+    "collisionRadius": 100, #Rather High, as i dont think i can modify this value easily from code
+    "coversColor": "",
+    "engineSlots": [
+       
+    ],
+    "height": 33,
+    "hullId": "modularFighterSpec2",
+    "hullName": "Modular Fighter",
+    "hullSize": "FRIGATE",
+    "shieldCenter": [
+        1,
+        0
+    ],
+    "shieldRadius": 22,
+    "spriteName": "graphics/ships/broadsword.png",
+    "style": "LOW_TECH",
+    "viewOffset": 0,
+    "weaponSlots": [
+       
+    ],
+    "width": 30
+}

@@ -19,6 +19,8 @@ abstract class BaseFighterChassis : BaseFighterComponent() {
     /* Chassis have their own ship specs for a variety of technical reasons */
     abstract fun getChassisSpecId() : String
 
+    abstract fun getWingSize() : Int
+
     fun getChassisSpec() = Global.getSettings().getHullSpec(getChassisSpecId())
 
     fun getSpriteName() = getChassisSpec().spriteName
