@@ -17,13 +17,19 @@ class ModularFightersModPlugin : BaseModPlugin() {
 
     override fun onGameLoad(newGame: Boolean) {
 
-        var spec = Global.getSettings().getHullSpec("modularFighterSpec1")
+        ModularFighterUtils.updateSpecsToMatchData()
+
+
+
+
+
+       /* var spec = Global.getSettings().getHullSpec("modularFighterSpec1")
         var chassis = DebugChassis()
         SpecModifier.applyChassisToSpec(spec, chassis)
 
         spec = Global.getSettings().getHullSpec("modularFighterSpec2")
         chassis = DebugChassis()
-        SpecModifier.applyChassisToSpec(spec, chassis)
+        SpecModifier.applyChassisToSpec(spec, chassis)*/
 
       /*  var spec = Global.getSettings().getHullSpec("broadsword")
         spec.setHitpoints(200000f)

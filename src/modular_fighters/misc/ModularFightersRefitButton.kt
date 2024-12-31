@@ -37,7 +37,7 @@ class ModularFightersRefitButton : BaseRefitButton() {
     override fun addTooltip(tooltip: TooltipMakerAPI, member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?) {
 
         tooltip.addPara("Design custom LPCs and craft them. You can have up to 50 different designs per save. Once finalized, an LPC can no longer be modified.",
-            0f, Misc.getTextColor(), Misc.getHighlightColor(), "custom LPCs", "craft", "50")
+            0f, Misc.getTextColor(), Misc.getHighlightColor(), "custom LPCs", "50")
 
     }
 

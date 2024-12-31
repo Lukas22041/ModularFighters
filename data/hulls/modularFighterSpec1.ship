@@ -1,6 +1,8 @@
 {
     "bounds": [
-      
+       -1, -1,
+       1, 0,
+       1, 1,
     ],
     "builtInMods": [
       "modular_fighters_hullmod",
