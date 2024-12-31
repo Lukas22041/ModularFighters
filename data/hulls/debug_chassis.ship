@@ -1,70 +1,91 @@
 {
-    "bounds": [
-        24,
-        1,
-        -9,
-        12,
-        -13,
-        -10,
-        8,
-        -9
-    ],
-    "builtInMods": [
-      
-    ],
-    "center": [
-        16,
-        22
-    ],
-    "collisionRadius": 100, #Rather High, as i dont think i can modify this value easily from code
-    "coversColor": "",
-    "engineSlots": [
-        {
-            "angle": 180,
-            "contrailSize": 64,
-            "length": 32,
-            "location": [
-                -9,
-                7
-            ],
-            "style": "OMEGA",
-            "width": 10
-        },
-        {
-            "angle": 180,
-            "contrailSize": 64,
-            "length": 32,
-            "location": [
-                -10,
-                -7
-            ],
-            "style": "OMEGA",
-            "width": 10
-        }
-    ],
-    "height": 48,
-    "hullId": "debug_chassis",
-    "hullName": "Debug Chassis",
-    "hullSize": "FIGHTER",
-    "shieldCenter": [
-        0,
-        0
-    ],
-    "shieldRadius": 28,
-    "spriteName": "graphics/ships/omega/iota.png",
-    "style": "OMEGA",
-    "viewOffset": 0,
-    "weaponSlots": [{
-        "angle": 0,
-        "arc": 360,
-        "id": "WS 000",
-        "locations": [
-            0,
-            0
-        ],
-        "mount": "TURRET",
-        "size": "SMALL",
-        "type": "UNIVERSAL"
-    }],
-    "width": 32
+  "hullName": "Debug Chassis",
+  "hullId": "debug_chassis",
+  "hullSize": "FIGHTER",
+  "spriteName": "graphics/ships/omega/iota.png",
+  "style": "OMEGA",
+  "height": 48,
+  "width": 32,
+  "center": [16, 22],
+  "collisionRadius": 100,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 28,
+  "viewOffset": 0,
+  "builtInWeapons": {
+    "WS0001": "modular_fighters_engine_pos",
+    "WS0002": "modular_fighters_subsystem_pos",
+    "WS0003": "modular_fighters_subsystem_box",
+    "WS0004": "modular_fighters_engine_box"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS 000",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [0, 0]
+    },
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [-12, -7]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": -45,
+      "locations": [7.5, -9.5]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 173,
+      "locations": [50, -28]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 50.5,
+      "locations": [-46.5, -40.5]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-9, 7],
+      "length": 32,
+      "width": 10,
+      "angle": 180,
+      "contrailSize": 64,
+      "style": "OMEGA"
+    },
+    {
+      "location": [-10, -7],
+      "length": 32,
+      "width": 10,
+      "angle": 180,
+      "contrailSize": 64,
+      "style": "OMEGA"
+    }
+  ],
+  "bounds": [
+    24, 1,
+    -9, 12,
+    -13, -10,
+    8, -9
+  ]
 }

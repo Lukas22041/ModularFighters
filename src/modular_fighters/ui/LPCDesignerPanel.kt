@@ -13,7 +13,11 @@ import modular_fighters.misc.addTooltip
 import modular_fighters.misc.clearChildren
 import modular_fighters.ui.elements.LPCSlotElement
 import modular_fighters.ui.elements.ChassisDisplayElement
+import modular_fighters.ui.elements.ChassisSelectorDisplayElement
 import modular_fighters.ui.elements.FighterListElement
+import org.lazywizard.lazylib.combat.entities.SimpleEntity
+import org.lazywizard.lazylib.ext.plus
+import org.lazywizard.lazylib.ext.rotate
 import org.lwjgl.util.vector.Vector2f
 import java.awt.Color
 
@@ -160,6 +164,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
         var centerX = width / 2f
         var centerY = height / 2f
+        var center = Vector2f(centerX, centerY)
 
         var scale = 2f
 
@@ -169,18 +174,94 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var element = panel.createUIElement(width, height, false)
         panel.addUIElement(element)
 
-        var chassisChooser = LPCSlotElement(280f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 84f, 84f)
-        chassisChooser.position.inTL(140f, 100f)
+        var builtins = data.chassis.getChassisSpec().builtInWeapons.toList()
+        var placeholderEntity = SimpleEntity(Vector2f(0f, 0f))
 
-        var engineChooser = LPCSlotElement(170f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 92f, 42f)
-        engineChooser.position.inTL(350f, 300f)
+
+
+
+        //Chassis Slot
+        var chassisChooser = LPCSlotElement(280f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 84f, 84f)
+        chassisChooser.position.inTL(50f, 50f)
 
         var chassis = data.chassis
-        var sprite = Global.getSettings().getSprite(chassis.getSpriteName())
-        sprite.setSize(sprite.width * scale, sprite.height * scale)
+      /*  var chassisChooserSprite = Global.getSettings().getSprite(chassis.getSpriteName())
+        chassisChooserSprite.setSize(chassisChooserSprite.width * scale, chassisChooserSprite.height * scale)*/
 
-        var chassisElement = ChassisDisplayElement(chassis, sprite, element, sprite.width, sprite.height)
-        chassisElement.position.inTL(centerX - sprite.width / 2, centerY - sprite.height / 2)
+        //Holographic Chassis Preview
+        var chassisSlotDisplayer = ChassisSelectorDisplayElement(chassis, element, 84f, 84f)
+        chassisSlotDisplayer.position.inTL(50f, 50f)
+
+
+
+
+
+
+
+        //Engine Slot Elements
+        var enginePosition = Vector2f(center)
+        var engineBoxPosition = Vector2f(350f, 300f)
+
+        var engineSlotPosData = builtins.find { it.second == "modular_fighters_engine_pos" }
+        var engineSlotBoxData = builtins.find { it.second == "modular_fighters_engine_box" }
+        var engineAngle = 170f
+
+        if (engineSlotPosData != null) {
+            var engineSlot = data.chassis.getChassisSpec().getWeaponSlot(engineSlotPosData.first)
+            enginePosition = engineSlot.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
+            enginePosition = center.plus(enginePosition)
+        }
+
+        if (engineSlotBoxData != null) {
+            var engineSlot = data.chassis.getChassisSpec().getWeaponSlot(engineSlotBoxData.first)
+            engineBoxPosition = engineSlot.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
+            engineBoxPosition.y = - engineBoxPosition.y //Need to invert Y
+            engineBoxPosition = center.plus(engineBoxPosition)
+            engineAngle = engineSlot.angle + 90f
+        }
+
+
+        var engineChooser = LPCSlotElement(engineAngle, Vector2f(panel.position.x + enginePosition.x, panel.position.y + enginePosition.y), element, 92f, 42f)
+        engineChooser.position.inTL(engineBoxPosition.x, engineBoxPosition.y)
+
+
+
+        //Subsystem Slot Elements
+        var subsystemSlotPositionsData = builtins.filter { it.second == "modular_fighters_subsystem_pos" }
+        var subsystemSlotBoxesData = builtins.filter { it.second == "modular_fighters_subsystem_box" }
+
+        for (slotIndex in subsystemSlotPositionsData.indices) {
+            var subsystemSlotPosData = subsystemSlotPositionsData[slotIndex]
+            var subsystemSlotBoxData = subsystemSlotBoxesData[slotIndex]
+
+            var subsystemPosition = Vector2f(center)
+            var subsystemBoxPosition = Vector2f(350f, 300f)
+            var subsystemAngle = 0f
+
+
+            //Position on Ship
+            var subsystemSlotPos = data.chassis.getChassisSpec().getWeaponSlot(subsystemSlotPosData.first)
+            subsystemPosition = subsystemSlotPos.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
+            subsystemPosition = center.plus(subsystemPosition)
+
+            //Position of the box
+            var subsystemBoxPos = data.chassis.getChassisSpec().getWeaponSlot(subsystemSlotBoxData.first)
+            subsystemBoxPosition = subsystemBoxPos.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
+            subsystemBoxPosition.y = - subsystemBoxPosition.y //Need to invert Y
+            subsystemBoxPosition = center.plus(subsystemBoxPosition)
+            subsystemAngle = subsystemBoxPos.angle + 90f
+
+            var subsystemChooser = LPCSlotElement(subsystemAngle, Vector2f(panel.position.x + subsystemPosition.x, panel.position.y + subsystemPosition.y), element, 42f, 42f)
+            subsystemChooser.position.inTL(subsystemBoxPosition.x, subsystemBoxPosition.y)
+        }
+
+
+        //Chassis Renderer
+        var chassisElementSprite = Global.getSettings().getSprite(chassis.getSpriteName())
+        chassisElementSprite.setSize(chassisElementSprite.width * scale, chassisElementSprite.height * scale)
+
+        var chassisElement = ChassisDisplayElement(chassis, chassisElementSprite, element, chassisElementSprite.width, chassisElementSprite.height)
+        chassisElement.position.inTL(centerX - chassisElementSprite.width / 2, centerY - chassisElementSprite.height / 2)
 
         //element.addPara("Test", 0f).position.inTL(centerX, centerY)
     }

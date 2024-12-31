@@ -82,7 +82,7 @@ class LPCSlotElement(var lineAngle: Float, var lineTarget: Vector2f, tooltip: To
         GL11.glColor4f(c.red / 255f,
             c.green / 255f,
             c.blue / 255f,
-            c.alpha / 255f * (alphaMult ))
+            c.alpha / 255f * (alphaMult * 0.6f))
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH)
         GL11.glBegin(GL11.GL_LINE_STRIP)
