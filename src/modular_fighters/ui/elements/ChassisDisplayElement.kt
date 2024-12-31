@@ -6,14 +6,16 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI
 import lunalib.lunaUI.elements.LunaElement
 import modular_fighters.components.chassis.BaseFighterChassis
 import org.dark.shaders.util.ShaderLib
+import org.lazywizard.lazylib.MathUtils
 import org.lwjgl.opengl.GL20
 
-class ChassisElement(var chassis: BaseFighterChassis, var sprite: SpriteAPI, tooltip: TooltipMakerAPI, width: Float, height: Float) : LunaElement(tooltip, width, height) {
+class ChassisDisplayElement(var chassis: BaseFighterChassis, var sprite: SpriteAPI, tooltip: TooltipMakerAPI, width: Float, height: Float) : LunaElement(tooltip, width, height) {
 
     companion object {
         var shader = 0
     }
 
+    var fade = 0f
 
     init {
         enableTransparency = true
@@ -33,6 +35,13 @@ class ChassisElement(var chassis: BaseFighterChassis, var sprite: SpriteAPI, too
         }
     }
 
+    override fun advance(amount: Float) {
+        super.advance(amount)
+
+        if (isHovering) fade += 5 * amount
+        else fade -= 5 * amount
+        fade = MathUtils.clamp(fade, 0f, 1f)
+    }
 
 
     override fun render(alphaMult: Float) {
@@ -42,17 +51,16 @@ class ChassisElement(var chassis: BaseFighterChassis, var sprite: SpriteAPI, too
         sprite.alphaMult = 0.95f
         sprite.render(x, y)
 
-        if (isHovering) {
-            GL20.glUseProgram(shader)
 
-            GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), alphaMult)
+        GL20.glUseProgram(shader)
 
-            sprite.setSize(width + 4, height + 4f)
-            sprite.alphaMult = 0.95f
-            sprite.render(x - 2, y - 2)
+        GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), alphaMult * fade)
 
-            GL20.glUseProgram(0)
-        }
+        sprite.setSize(width + 4, height + 4f)
+        sprite.alphaMult = 0.95f
+        sprite.render(x - 2, y - 2)
+
+        GL20.glUseProgram(0)
 
 
     }

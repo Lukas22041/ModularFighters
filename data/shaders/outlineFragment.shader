@@ -11,8 +11,8 @@ void main() {
 	vec4 col = texture2D(tex, texCoord);
 	vec2 st = texCoord;
 
-	vec4 col1 = vec4(0, 1, 0.35, col.a * 3);
-	vec4 col2 = vec4(0, 0.35, 1, col.a * 3);
+	vec4 col1 = vec4(0, 1, 0.35, col.a * 3 * alphaMult);
+	vec4 col2 = vec4(0, 0.35, 1, col.a * 3 * alphaMult);
 
 	if (col.a > 0.7)
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);

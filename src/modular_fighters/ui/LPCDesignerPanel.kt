@@ -11,8 +11,10 @@ import modular_fighters.ModularFighterUtils
 import modular_fighters.components.ModularFighterData
 import modular_fighters.misc.addTooltip
 import modular_fighters.misc.clearChildren
-import modular_fighters.ui.elements.ChassisElement
+import modular_fighters.ui.elements.LPCSlotElement
+import modular_fighters.ui.elements.ChassisDisplayElement
 import modular_fighters.ui.elements.FighterListElement
+import org.lwjgl.util.vector.Vector2f
 import java.awt.Color
 
 class LPCDesignerPanel(var parent: CustomPanelAPI) {
@@ -157,7 +159,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var height = 500f
 
         var centerX = width / 2f
-        var centerY = height / 2
+        var centerY = height / 2f
 
         var scale = 2f
 
@@ -167,11 +169,17 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var element = panel.createUIElement(width, height, false)
         panel.addUIElement(element)
 
+        var chassisChooser = LPCSlotElement(280f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 84f, 84f)
+        chassisChooser.position.inTL(140f, 100f)
+
+        var engineChooser = LPCSlotElement(170f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 92f, 42f)
+        engineChooser.position.inTL(350f, 300f)
+
         var chassis = data.chassis
         var sprite = Global.getSettings().getSprite(chassis.getSpriteName())
         sprite.setSize(sprite.width * scale, sprite.height * scale)
 
-        var chassisElement = ChassisElement(chassis, sprite, element, sprite.width, sprite.height)
+        var chassisElement = ChassisDisplayElement(chassis, sprite, element, sprite.width, sprite.height)
         chassisElement.position.inTL(centerX - sprite.width / 2, centerY - sprite.height / 2)
 
         //element.addPara("Test", 0f).position.inTL(centerX, centerY)
