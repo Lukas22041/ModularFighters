@@ -7,6 +7,7 @@ class ModData {
 
     //SpecId, Data
     var fighterData = HashMap<String, ModularFighterData>()
+    var visibleEntries = 1
 
     init {
         var specs = Global.getSettings().allShipHullSpecs.filter { it.baseHullId.contains("modularFighterSpec") }.filter { !it.isDHull }

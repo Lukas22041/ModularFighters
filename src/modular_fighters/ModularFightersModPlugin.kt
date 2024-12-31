@@ -4,10 +4,12 @@ import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.ShieldAPI
 import lunalib.lunaRefit.LunaRefitManager
+import modular_fighters.components.ModularFighterData
 import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.misc.ModularFightersRefitButton
 import modular_fighters.misc.ReflectionUtils
 import modular_fighters.modifier.SpecModifier
+import modular_fighters.ui.LPCDesignerPanel
 
 class ModularFightersModPlugin : BaseModPlugin() {
 
@@ -16,6 +18,10 @@ class ModularFightersModPlugin : BaseModPlugin() {
     }
 
     override fun onGameLoad(newGame: Boolean) {
+
+        //Reseting those, as otherwise if you increased the visible count of designs, and then went back to a previous safe, you could select an invalid fighter.
+        LPCDesignerPanel.selectedFighter =  ModularFighterUtils.getData().fighterData.values.first()
+        LPCDesignerPanel.lastScrollerY = 0f
 
         ModularFighterUtils.updateSpecsToMatchData()
 

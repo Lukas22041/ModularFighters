@@ -30,8 +30,9 @@ class FighterListElement(var data: ModularFighterData, tooltip: TooltipMakerAPI,
 
         onHoverEnter {
             playScrollSound()
-            backgroundAlpha = 0.3f }
-        onHoverExit { backgroundAlpha = 0f }
+            //backgroundAlpha = 0.3f
+        }
+        //onHoverExit { backgroundAlpha = 0f }
     }
 
     override fun render(alphaMult: Float) {
