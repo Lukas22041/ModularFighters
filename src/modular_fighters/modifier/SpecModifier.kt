@@ -14,7 +14,6 @@ object SpecModifier {
         //Sprite
         ReflectionUtils.invoke("setSpriteSpec", spec, ReflectionUtils.invoke("getSpriteSpec", chassisSpec))
 
-
         //EngineSpec //Do this later, as the engine component should set the defaults
         //ReflectionUtils.invoke("setEngineSpec", spec, ReflectionUtils.invoke("getEngineSpec", chassisSpec))
 

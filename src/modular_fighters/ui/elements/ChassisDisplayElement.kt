@@ -15,7 +15,7 @@ class ChassisDisplayElement(var chassis: BaseFighterChassis, var sprite: SpriteA
         var shader = 0
     }
 
-    var fade = 0f
+    var fade = 0.2f
 
     init {
         enableTransparency = true
@@ -40,7 +40,7 @@ class ChassisDisplayElement(var chassis: BaseFighterChassis, var sprite: SpriteA
 
         if (isHovering) fade += 5 * amount
         else fade -= 5 * amount
-        fade = MathUtils.clamp(fade, 0f, 1f)
+        fade = MathUtils.clamp(fade, 0.2f, 1f)
     }
 
 

@@ -4,17 +4,18 @@ import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
+import com.fs.starfarer.loading.specs.BaseWeaponSpec
+import com.fs.starfarer.ui.impl.StandardTooltipV2
+import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaUI.elements.LunaSpriteElement
 import modular_fighters.ModularFighterUtils
 import modular_fighters.components.ModularFighterData
+import modular_fighters.misc.ReflectionUtils
 import modular_fighters.misc.addTooltip
 import modular_fighters.misc.clearChildren
-import modular_fighters.ui.elements.LPCSlotElement
-import modular_fighters.ui.elements.ChassisDisplayElement
-import modular_fighters.ui.elements.ChassisSelectorDisplayElement
-import modular_fighters.ui.elements.FighterListElement
+import modular_fighters.ui.elements.*
 import org.lazywizard.lazylib.combat.entities.SimpleEntity
 import org.lazywizard.lazylib.ext.plus
 import org.lazywizard.lazylib.ext.rotate
@@ -155,6 +156,10 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
     fun recreateRefitPanel() {
 
+
+
+
+
         var data = selectedFighter
 
         var listWidth = 225f
@@ -174,6 +179,9 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var element = panel.createUIElement(width, height, false)
         panel.addUIElement(element)
 
+
+
+
         var builtins = data.getChassis().getChassisSpec().builtInWeapons.toList()
         var placeholderEntity = SimpleEntity(Vector2f(0f, 0f))
 
@@ -191,12 +199,6 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         //Holographic Chassis Preview
         var chassisSlotDisplayer = ChassisSelectorDisplayElement(chassis, element, 84f, 84f)
         chassisSlotDisplayer.position.inTL(50f, 50f)
-
-
-
-
-
-
 
         //Engine Slot Elements
         var enginePosition = Vector2f(center)
@@ -264,6 +266,42 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         chassisElement.position.inTL(centerX - chassisElementSprite.width / 2, centerY - chassisElementSprite.height / 2)
 
         //element.addPara("Test", 0f).position.inTL(centerX, centerY)
+
+        var spriteSpec = ReflectionUtils.invoke("getSpriteSpec", chassis.getChassisSpec())
+
+
+        //Mounts
+
+        var mounts = chassis.getChassisSpec().allWeaponSlotsCopy.filter { !it.isDecorative }
+        for (mount in mounts) {
+            var spec = Global.getSettings().getWeaponSpec("minipulser")
+
+            var mountSize = 30f
+
+            var mountElement = WeaponMountElement(mount, spec, scale, element, mountSize, mountSize)
+
+            var mountPosition = mount.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
+            mountPosition.y =- mountPosition.y //Need to invert Y
+
+
+
+            mountPosition = center.plus(mountPosition)
+
+
+            mountElement.position.inTL(mountPosition.x - mountSize / 2, mountPosition.y - mountSize / 2)
+
+            var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
+            var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, spec, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
+            ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, mountElement.elementPanel, weaponDesc, 150f)
+        }
+
+
+
+
+
+        //Weapon Tooltip
+
+
     }
 
 }

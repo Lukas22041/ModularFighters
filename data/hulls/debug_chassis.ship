@@ -2,11 +2,11 @@
   "hullName": "Debug Chassis",
   "hullId": "debug_chassis",
   "hullSize": "FIGHTER",
-  "spriteName": "graphics/ships/omega/iota.png",
+  "spriteName": "graphics/chassis/debug_chassis.png",
   "style": "OMEGA",
   "height": 48,
   "width": 32,
-  "center": [16, 22],
+  "center": [16, 24],
   "collisionRadius": 100,
   "shieldCenter": [0, 0],
   "shieldRadius": 28,
@@ -21,11 +21,11 @@
     {
       "id": "WS 000",
       "size": "SMALL",
-      "type": "UNIVERSAL",
+      "type": "HYBRID",
       "mount": "TURRET",
-      "arc": 360,
+      "arc": 270,
       "angle": 0,
-      "locations": [0, 0]
+      "locations": [-2, -0]
     },
     {
       "id": "WS0001",
@@ -34,7 +34,7 @@
       "mount": "TURRET",
       "arc": 360,
       "angle": 0,
-      "locations": [-12, -7]
+      "locations": [-13.5, -7]
     },
     {
       "id": "WS0002",
@@ -43,7 +43,7 @@
       "mount": "TURRET",
       "arc": 360,
       "angle": -45,
-      "locations": [7.5, -9.5]
+      "locations": [7, -9.5]
     },
     {
       "id": "WS0003",
@@ -52,7 +52,7 @@
       "mount": "TURRET",
       "arc": 360,
       "angle": 173,
-      "locations": [50, -28]
+      "locations": [50.5, -28]
     },
     {
       "id": "WS0004",
@@ -61,7 +61,7 @@
       "mount": "TURRET",
       "arc": 360,
       "angle": 50.5,
-      "locations": [-46.5, -40.5]
+      "locations": [-47.5, -40.5]
     }
   ],
   "engineSlots": [

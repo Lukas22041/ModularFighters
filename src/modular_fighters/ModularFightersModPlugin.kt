@@ -3,6 +3,8 @@ package modular_fighters
 import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.ShieldAPI
+import com.fs.starfarer.loading.specs.BaseWeaponSpec
+import com.fs.starfarer.ui.impl.StandardTooltipV2
 import lunalib.lunaRefit.LunaRefitManager
 import modular_fighters.components.ComponentPluginLoader
 import modular_fighters.components.ModularFighterData
@@ -32,7 +34,6 @@ class ModularFightersModPlugin : BaseModPlugin() {
         LPCDesignerPanel.lastScrollerY = 0f
 
         ModularFighterUtils.updateSpecsToMatchData()
-
 
 
 

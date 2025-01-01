@@ -29,4 +29,7 @@ abstract class BaseFighterChassis : BaseFighterComponent() {
     fun getOutlineColor1() : Color = Color(0, 255, 90)
     fun getOutlineColor2() : Color = Color(0, 90, 255)
 
+    /*fun getOutlineColor1() : Color = Color(255, 0, 90)
+    fun getOutlineColor2() : Color = Color(0, 90, 255)*/
+
 }
