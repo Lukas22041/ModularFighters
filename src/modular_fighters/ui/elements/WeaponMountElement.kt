@@ -12,6 +12,7 @@ import lunalib.lunaUI.elements.LunaElement
 import modular_fighters.components.chassis.BaseFighterChassis
 import org.dark.shaders.util.ShaderLib
 import org.lazywizard.lazylib.MathUtils
+import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
 import org.lwjgl.util.vector.Vector2f
@@ -55,7 +56,7 @@ class WeaponMountElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI?, v
     override fun advance(amount: Float) {
         super.advance(amount)
 
-        if (isHovering) fade += 10 * amount
+        if (isHovering || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) fade += 10 * amount
         else fade -= 10 * amount
         fade = MathUtils.clamp(fade, 0f, 1f)
     }
@@ -71,7 +72,7 @@ class WeaponMountElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI?, v
 
 
         var size = (width * fade)
-        var alpha = 0.6f + (0.4f * fade)
+        var alpha = 0.8f + (0.2f * fade)
 
         var color = when(mount.weaponType) {
             WeaponAPI.WeaponType.BALLISTIC -> Misc.MOUNT_BALLISTIC
