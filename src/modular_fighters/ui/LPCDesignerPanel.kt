@@ -174,7 +174,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var element = panel.createUIElement(width, height, false)
         panel.addUIElement(element)
 
-        var builtins = data.chassis.getChassisSpec().builtInWeapons.toList()
+        var builtins = data.getChassis().getChassisSpec().builtInWeapons.toList()
         var placeholderEntity = SimpleEntity(Vector2f(0f, 0f))
 
 
@@ -184,7 +184,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var chassisChooser = LPCSlotElement(280f, Vector2f(panel.position.x + centerX, panel.position.y + centerY), element, 84f, 84f)
         chassisChooser.position.inTL(50f, 50f)
 
-        var chassis = data.chassis
+        var chassis = data.getChassis()
       /*  var chassisChooserSprite = Global.getSettings().getSprite(chassis.getSpriteName())
         chassisChooserSprite.setSize(chassisChooserSprite.width * scale, chassisChooserSprite.height * scale)*/
 
@@ -207,13 +207,13 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var engineAngle = 170f
 
         if (engineSlotPosData != null) {
-            var engineSlot = data.chassis.getChassisSpec().getWeaponSlot(engineSlotPosData.first)
+            var engineSlot = data.getChassis().getChassisSpec().getWeaponSlot(engineSlotPosData.first)
             enginePosition = engineSlot.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             enginePosition = center.plus(enginePosition)
         }
 
         if (engineSlotBoxData != null) {
-            var engineSlot = data.chassis.getChassisSpec().getWeaponSlot(engineSlotBoxData.first)
+            var engineSlot = data.getChassis().getChassisSpec().getWeaponSlot(engineSlotBoxData.first)
             engineBoxPosition = engineSlot.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             engineBoxPosition.y = - engineBoxPosition.y //Need to invert Y
             engineBoxPosition = center.plus(engineBoxPosition)
@@ -240,12 +240,12 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
 
             //Position on Ship
-            var subsystemSlotPos = data.chassis.getChassisSpec().getWeaponSlot(subsystemSlotPosData.first)
+            var subsystemSlotPos = data.getChassis().getChassisSpec().getWeaponSlot(subsystemSlotPosData.first)
             subsystemPosition = subsystemSlotPos.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             subsystemPosition = center.plus(subsystemPosition)
 
             //Position of the box
-            var subsystemBoxPos = data.chassis.getChassisSpec().getWeaponSlot(subsystemSlotBoxData.first)
+            var subsystemBoxPos = data.getChassis().getChassisSpec().getWeaponSlot(subsystemSlotBoxData.first)
             subsystemBoxPosition = subsystemBoxPos.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             subsystemBoxPosition.y = - subsystemBoxPosition.y //Need to invert Y
             subsystemBoxPosition = center.plus(subsystemBoxPosition)

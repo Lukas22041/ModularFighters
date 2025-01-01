@@ -54,7 +54,12 @@ class ChassisDisplayElement(var chassis: BaseFighterChassis, var sprite: SpriteA
 
         GL20.glUseProgram(shader)
 
+        var col1 = chassis.getOutlineColor1()
+        var col2 = chassis.getOutlineColor2()
+
         GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), alphaMult * fade)
+        GL20.glUniform3f(GL20.glGetUniformLocation(shader, "outlineCol1"), col1.red / 255f, col1.green / 255f, col1.blue / 255f)
+        GL20.glUniform3f(GL20.glGetUniformLocation(shader, "outlineCol2"), col2.red / 255f, col2.green / 255f, col2.blue / 255f)
 
         sprite.setSize(width + 4, height + 4f)
         sprite.alphaMult = 0.95f

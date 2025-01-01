@@ -5,7 +5,7 @@ import modular_fighters.components.BaseFighterComponent
 
 abstract class BaseFighterSubsystem : BaseFighterComponent() {
 
-    abstract fun isShipSystem()
+    abstract fun isShipSystem() : Boolean
 
     fun getShipSystemId() : String { return "" }
 

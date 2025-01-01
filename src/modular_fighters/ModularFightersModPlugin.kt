@@ -4,6 +4,7 @@ import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.ShieldAPI
 import lunalib.lunaRefit.LunaRefitManager
+import modular_fighters.components.ComponentPluginLoader
 import modular_fighters.components.ModularFighterData
 import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.misc.ConstantTimeIncreaseScript
@@ -15,6 +16,8 @@ import modular_fighters.ui.LPCDesignerPanel
 class ModularFightersModPlugin : BaseModPlugin() {
 
     override fun onApplicationLoad() {
+        ComponentPluginLoader.loadComponentsFromCSV()
+
         LunaRefitManager.addRefitButton(ModularFightersRefitButton())
     }
 

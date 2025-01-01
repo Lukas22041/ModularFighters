@@ -2,6 +2,8 @@
 
 uniform sampler2D tex;
 uniform float alphaMult;
+uniform vec3 outlineCol1;
+uniform vec3 outlineCol2;
 
 vec2 texCoord = gl_TexCoord[0].xy;
 
@@ -11,8 +13,8 @@ void main() {
 	vec4 col = texture2D(tex, texCoord);
 	vec2 st = texCoord;
 
-	vec4 col1 = vec4(0, 1, 0.35, col.a * 3 * alphaMult);
-	vec4 col2 = vec4(0, 0.35, 1, col.a * 3 * alphaMult);
+	vec4 col1 = vec4(outlineCol1.r, outlineCol1.g, outlineCol1.b, col.a * 3 * alphaMult);
+	vec4 col2 = vec4(outlineCol2.r, outlineCol2.g, outlineCol2.b, col.a * 3 * alphaMult);
 
 	if (col.a > 0.7)
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);

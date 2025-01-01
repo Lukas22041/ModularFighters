@@ -9,7 +9,7 @@ import kotlin.math.min
 
 class FighterListElement(var data: ModularFighterData, tooltip: TooltipMakerAPI, width: Float, height: Float) : LunaElement(tooltip, width, height) {
 
-    var sprite = Global.getSettings().getSprite(data.chassis.getChassisSpec().spriteName)
+    var sprite = Global.getSettings().getSprite(data.getChassis().getChassisSpec().spriteName)
     var backgroundSprite = Global.getSettings().getSprite("graphics/icons/cargo/blueprint_fighter.png")
     var baseW = sprite.width
     var baseH = sprite.height

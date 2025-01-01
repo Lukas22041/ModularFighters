@@ -7,7 +7,7 @@ uniform vec3 colorMult;
 uniform float iTime;
 uniform float alphaMult;
 
-float RATE = 0.0000300;
+float RATE = 0.0000250;
 vec2 texCoord = gl_TexCoord[0].xy;
 
 

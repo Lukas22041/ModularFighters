@@ -28,7 +28,7 @@ class ChassisSelectorDisplayElement(var chassis: BaseFighterChassis, tooltip: To
         renderBorder = false
         renderBackground = false
 
-        if (shader == 0) {
+        //if (shader == 0) {
             shader = ShaderLib.loadShader(Global.getSettings().loadText("data/shaders/baseVertex.shader"),
                 Global.getSettings().loadText("data/shaders/glitchFragment.shader"))
             if (shader != 0) {
@@ -38,7 +38,7 @@ class ChassisSelectorDisplayElement(var chassis: BaseFighterChassis, tooltip: To
             } else {
                 var test = ""
             }
-        }
+       // }
     }
 
     override fun advance(amount: Float) {

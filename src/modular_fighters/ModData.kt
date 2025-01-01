@@ -14,7 +14,7 @@ class ModData {
         var index = 0
         for (spec in specs) {
             index++
-            var data = ModularFighterData(spec.baseHullId, spec.baseHullId + "_wing", "Modular LPC $index")
+            var data = ModularFighterData(spec.baseHullId, spec.baseHullId + "_wing", spec.baseHullId + "_variant", "Modular LPC $index")
             fighterData.put(spec.baseHullId, data)
         }
     }
