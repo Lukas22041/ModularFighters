@@ -155,7 +155,34 @@ class WeaponMountElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI?, v
         }
 
         //Missile
-        //TBD
+        if (mount.weaponType == WeaponAPI.WeaponType.MISSILE || mount.weaponType == WeaponAPI.WeaponType.COMPOSITE || mount.weaponType == WeaponAPI.WeaponType.SYNERGY || mount.weaponType == WeaponAPI.WeaponType.UNIVERSAL) {
+            GL11.glPushMatrix()
+
+            GL11.glTranslatef(0f, 0f, 0f)
+            GL11.glRotatef(0f, 0f, 0f, 1f)
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D)
+
+            GL11.glEnable(GL11.GL_BLEND)
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+
+            GL11.glColor4f(c.red / 255f,
+                c.green / 255f,
+                c.blue / 255f,
+                c.alpha / 255f * (alphaMult * alpha))
+
+            GL11.glEnable(GL11.GL_LINE_SMOOTH)
+            GL11.glBegin(GL11.GL_LINE_STRIP)
+
+            GL11.glVertex2f(x- size / 2, y + height / 2 )
+            GL11.glVertex2f(x + width / 2 , y + height + size / 2)
+            GL11.glVertex2f(x + width + size / 2, y + height / 2 )
+            GL11.glVertex2f(x + width / 2, y  - size / 2)
+            GL11.glVertex2f(x- size / 2, y + height / 2 )
+
+            GL11.glEnd()
+            GL11.glPopMatrix()
+        }
 
 
         //Arc Rendering
@@ -259,7 +286,7 @@ class WeaponMountElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI?, v
             GL11.glColor4f(c.red / 255f,
                 c.green / 255f,
                 c.blue / 255f,
-                c.alpha / 255f * (alpha * alphaMod))
+                c.alpha / 255f * (alpha * alphaMod * 0.5f))
             GL11.glVertex2f(point.x, point.y)
 
             if (!swappedAlpha)alphaMod += alphaPer

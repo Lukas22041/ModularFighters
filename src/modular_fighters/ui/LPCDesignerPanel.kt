@@ -181,7 +181,6 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
 
 
-
         var builtins = data.getChassis().getChassisSpec().builtInWeapons.toList()
         var placeholderEntity = SimpleEntity(Vector2f(0f, 0f))
 
@@ -193,8 +192,9 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         chassisChooser.position.inTL(50f, 50f)
 
         var chassis = data.getChassis()
-      /*  var chassisChooserSprite = Global.getSettings().getSprite(chassis.getSpriteName())
-        chassisChooserSprite.setSize(chassisChooserSprite.width * scale, chassisChooserSprite.height * scale)*/
+        var chassisSpec = chassis.getChassisSpec()
+        /*  var chassisChooserSprite = Global.getSettings().getSprite(chassis.getSpriteName())
+          chassisChooserSprite.setSize(chassisChooserSprite.width * scale, chassisChooserSprite.height * scale)*/
 
         //Holographic Chassis Preview
         var chassisSlotDisplayer = ChassisSelectorDisplayElement(chassis, element, 84f, 84f)
@@ -278,7 +278,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
             var mountSize = 30f
 
-            var mountElement = WeaponMountElement(mount, spec, scale, element, mountSize, mountSize)
+            var mountElement = WeaponMountElement(mount, null, scale, element, mountSize, mountSize)
 
             var mountPosition = mount.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             mountPosition.y =- mountPosition.y //Need to invert Y
@@ -296,11 +296,11 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         }
 
 
-
-
-
-        //Weapon Tooltip
-
+        //Need a seperate element, they are also not included in the main list of mounts
+        //Decorative Mounts
+        var decorativeMounts = chassisSpec.builtInWeapons.map { chassisSpec.getWeaponSlot(it.key) }.filter { it.isDecorative }
+        decorativeMounts = decorativeMounts
+            .filter { it.id != "modular_fighters_engine_box" && it.id != "modular_fighters_engine_pos" && it.id != "modular_fighters_subsystem_box" && it.id != "modular_fighters_subsystem_pos" }
 
     }
 
