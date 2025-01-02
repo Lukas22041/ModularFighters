@@ -20,7 +20,7 @@
     "height": 33,
     "hullId": "modularFighterSpec0",
     "hullName": "Modular Fighter",
-    "hullSize": "FRIGATE",
+    "hullSize": "FIGHTER",
     "shieldCenter": [
         1,
         0

@@ -12,7 +12,6 @@ import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.misc.ConstantTimeIncreaseScript
 import modular_fighters.misc.ModularFightersRefitButton
 import modular_fighters.misc.ReflectionUtils
-import modular_fighters.modifier.SpecModifier
 import modular_fighters.ui.LPCDesignerPanel
 
 class ModularFightersModPlugin : BaseModPlugin() {

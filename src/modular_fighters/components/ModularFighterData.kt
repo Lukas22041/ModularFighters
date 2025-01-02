@@ -1,11 +1,18 @@
 package modular_fighters.components
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.combat.ShipHullSpecAPI
+import com.fs.starfarer.api.combat.WeaponAPI
+import com.fs.starfarer.api.loading.WeaponGroupSpec
+import com.fs.starfarer.api.loading.WeaponGroupType
 import modular_fighters.components.chassis.BaseFighterChassis
 import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.components.engines.BaseFighterEngine
 import modular_fighters.components.engines.DebugEngine
 import modular_fighters.components.subsystems.BaseFighterSubsystem
+import modular_fighters.misc.ReflectionUtils
+import modular_fighters.misc.setArmorRating
+import modular_fighters.misc.setHitpoints
 import modular_fighters.modifier.FighterStatsObject
 
 class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
@@ -14,8 +21,8 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
     var engineId = "debug_engine"
     var subsystemIds = HashMap<Int, String?>()
 
-    @Transient private var chassis: BaseFighterChassis? = DebugChassis()
-    @Transient private var engine: BaseFighterEngine? = DebugEngine()
+    @Transient private var chassis: BaseFighterChassis? = null
+    @Transient private var engine: BaseFighterEngine? = null
     @Transient private var subsystems: HashMap<Int, BaseFighterSubsystem?>? = null
 
     //Slot / WeaponSpecId
@@ -62,11 +69,11 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
     }
 
 
-    fun getEngine() : BaseFighterChassis {
-        if (chassis == null) {
-            setEngine(chassisId)
+    fun getEngine() : BaseFighterEngine {
+        if (engine == null) {
+            setEngine(engineId)
         }
-        return chassis!!
+        return engine!!
     }
 
     fun setEngine(id: String) {
@@ -134,8 +141,82 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
         var fighterSpec = getSpec()
         var wingSpec = Global.getSettings().getFighterWingSpec(fighterWingSpecId)
-        var variantSpec = Global.getSettings().getVariant(variantId)
+        var variant = Global.getSettings().getVariant(variantId)
 
+        //Ship Spec
+        applyChassisDataToSpec(fighterSpec, chassis)
+        fighterSpec.manufacturer = "Modular Design"
+        fighterSpec.hullName = name
+
+        fighterSpec.engineSpec.maxSpeed = stats.topSpeed.modifiedValue
+        fighterSpec.engineSpec.acceleration = stats.acceleration.modifiedValue
+        fighterSpec.engineSpec.deceleration = stats.deceleration.modifiedValue
+        fighterSpec.engineSpec.maxTurnRate = stats.maxTurnRate.modifiedValue
+        fighterSpec.engineSpec.turnAcceleration = stats.turnAcceleration.modifiedValue
+
+        fighterSpec.setHitpoints(stats.hitpoints.modifiedValue)
+        fighterSpec.setArmorRating(stats.armor.modifiedValue)
+
+        //Wing Data
+        wingSpec.numFighters = stats.numFighters.modifiedValue.toInt()
+        wingSpec.refitTime = stats.refitTime.modifiedValue
+
+        wingSpec.formation = stats.formation
+        wingSpec.range = stats.engagementRange.modifiedValue
+        wingSpec.attackRunRange = stats.attackRunRange.modifiedValue
+        wingSpec.baseValue = stats.baseValue.modifiedValue
+
+        //Variant Data
+        variant.weaponGroups.clear()
+        for ((slotId, specId) in fittedWeapons) {
+            variant.addWeapon(slotId, specId)
+            var g = WeaponGroupSpec(WeaponGroupType.LINKED)
+            g.addSlot(slotId)
+            variant.addWeaponGroup(g)
+        }
+
+        //Designation
+        variant.setVariantDisplayName("Fighter")
+        wingSpec.roleDesc = "Fighter"
+        if (fighterSpec.allWeaponSlotsCopy.any { it.weaponType == WeaponAPI.WeaponType.MISSILE || it.weaponType == WeaponAPI.WeaponType.COMPOSITE || it.weaponType == WeaponAPI.WeaponType.SYNERGY } ) {
+            wingSpec.roleDesc = "Bomber"
+            variant.setVariantDisplayName("Bomber")
+        }
+    }
+
+    //Mounts, Engines, Hullstyle, Sprite, Bounds, Shields, Flux Stats
+    //Bounds seem to be handled by the sprite spec, colission radius however is just set high by default in the spec.
+    fun applyChassisDataToSpec(spec: ShipHullSpecAPI, chassis: BaseFighterChassis) {
+        var chassisSpec = chassis.getChassisSpec()
+
+        //Sprite
+        ReflectionUtils.invoke("setSpriteSpec", spec, ReflectionUtils.invoke("getSpriteSpec", chassisSpec))
+
+        //EngineSpec //Do this later, as the engine component should set the defaults
+        //ReflectionUtils.invoke("setEngineSpec", spec, ReflectionUtils.invoke("getEngineSpec", chassisSpec))
+
+        //FluxSpec
+
+        //Engines
+        var engines = ReflectionUtils.invoke("getEngineSlots", spec) as MutableList<Any>
+        var chassisEngines = ReflectionUtils.invoke("getEngineSlots", chassisSpec) as MutableList<Any>
+        engines.clear()
+        engines.addAll(chassisEngines)
+
+        //Slots
+        var slots = ReflectionUtils.invoke("getAllWeaponSlots", spec) as MutableList<Any>
+        var chassisSlots = ReflectionUtils.invoke("getAllWeaponSlots", chassisSpec) as MutableList<Any>
+        slots.clear()
+        slots.addAll(chassisSlots)
+
+        //Hullstyle
+        ReflectionUtils.invoke("setHullStyle", spec, ReflectionUtils.invoke("getHullStyle", chassisSpec))
+
+        //Shield
+        ReflectionUtils.invoke("setShieldSpec", spec, ReflectionUtils.invoke("getShieldSpec", chassisSpec))
+
+        //Flux
+        ReflectionUtils.invoke("setReactorSpec", spec, ReflectionUtils.invoke("getReactorSpec", chassisSpec))
     }
 
 }
