@@ -27,6 +27,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
     //Slot / WeaponSpecId
     var fittedWeapons = HashMap<String, String>()
+    var lastStatsObject: FighterStatsObject = FighterStatsObject()
 
     init {
         subsystemIds[0] = "debug_subsystem"
@@ -133,6 +134,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         var subsystems = getAllSubsystems()
 
         var stats = FighterStatsObject()
+        lastStatsObject = stats
 
         chassis.applyStats(stats)
         engine.applyStats(stats)
@@ -158,6 +160,8 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         fighterSpec.setArmorRating(stats.armor.modifiedValue)
 
         //Wing Data
+        wingSpec.tags.clear() //Clear Tags just in case
+
         wingSpec.numFighters = stats.numFighters.modifiedValue.toInt()
         wingSpec.refitTime = stats.refitTime.modifiedValue
 

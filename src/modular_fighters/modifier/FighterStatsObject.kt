@@ -23,8 +23,11 @@ class FighterStatsObject {
     var attackRunRange = MutableStat(0f)
     var baseValue = MutableStat(1000f)
 
+    var damageMult = MutableStat(1f)
+    var rangeMult = MutableStat(1f)
+    var fireRateMult = MutableStat(1f)
+
     var isIndependent = false
     var attackAtAngle = false
-
 
 }

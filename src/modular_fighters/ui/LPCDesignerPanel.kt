@@ -1,6 +1,7 @@
 package modular_fighters.ui
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.fleet.FleetMemberType
 import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
@@ -10,7 +11,6 @@ import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaExtensions.addLunaTextfield
-import lunalib.lunaUI.elements.LunaElement
 import lunalib.lunaUI.elements.LunaSpriteElement
 import modular_fighters.ModularFighterUtils
 import modular_fighters.components.ModularFighterData
@@ -353,7 +353,48 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
             position.inTL(width - finishBWidth - 10f, height - finishBHeight - 10f)
         }
 
+        //Preview Button
 
+        var previewButtonWidth = 30f
+        var previewButtonHeight = 30f
+        //Complete Design/Craft Button
+        var previewButton = element.addLunaElement(previewButtonWidth, previewButtonHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+            }
+
+            onHoverEnter {
+                playScrollSound()
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            innerElement.setParaFont("graphics/fonts/victor14.fnt")
+            var textPara = innerElement.addPara("*", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(previewButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2, previewButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+
+            position.leftOfTop(finishButton.elementPanel, 5f)
+        }
+
+        var wingMember = Global.getFactory().createFleetMember(FleetMemberType.FIGHTER_WING, data.fighterWingSpecId)
+        var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
+        var weaponDesc = ReflectionUtils.invokeStatic(2, "createFleetMemberTooltipPreDeploy", StandardTooltipV2::class.java, wingMember, Global.getSector().playerPerson.stats) as StandardTooltipV2
+        ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, previewButton.elementPanel, weaponDesc, 150f)
+
+        previewButton.onHoverEnter {
+            data.applyDataToSpecs() //Update before each hover.
+            ReflectionUtils.set("index", weaponDesc, 1)
+        }
+
+
+
+        //Help Button
         var helpButtonWidth = 30f
         var helpButtonHeight = 30f
         //Complete Design/Craft Button
@@ -378,8 +419,11 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
             var textPara = innerElement.addPara("?", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
             textPara!!.position.inTL(helpButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, helpButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
 
-            position.leftOfTop(finishButton.elementPanel, 5f)
+            position.leftOfTop(previewButton.elementPanel, 5f)
         }
+
+
+        //Name Field
 
         var nameBWidth = 170f
         var nameBHeight = 25f
@@ -414,6 +458,10 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
             }
 
         }
+
+
+
+
 
     }
 
