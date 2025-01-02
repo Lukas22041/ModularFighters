@@ -310,6 +310,9 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
                 var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
                 var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, spec, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
                 ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, mountElement.elementPanel, weaponDesc, 150f)
+                weaponDesc.setBeforeShowing {
+                    ReflectionUtils.invokeByNameAlone("setTooltipPositionRelativeToAnchor", mountElement.elementPanel, -weaponDesc.width + 100, (height - weaponDesc.getHeight()) / 2, element)
+                }
             }
 
             mountElement.onClick {
@@ -541,7 +544,6 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
         var pickerList = pickerElement.elementPanel.createUIElement(pWidth, pHeight, true)
         pickerList.position.inTL(0f, 0f)
 
-        var tooltipAnchor = pickerList.addLunaElement(0f, 0f)
 
         var first = true
         for ((weapon, quantity) in weaponsList) {
@@ -584,7 +586,6 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
 
         }
         pickerList.addSpacer(3f)
-        tooltipAnchor.position.inTL(0f, pHeight / 2)
 
 
         pickerElement.elementPanel.addUIElement(pickerList)
