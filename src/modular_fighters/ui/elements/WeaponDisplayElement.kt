@@ -56,7 +56,7 @@ class WeaponDisplayElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI, 
         super.render(alphaMult)
 
 
-        var alpha = 1f
+        var alpha = 0.8f
 
         var color = when(weapon.mountType) {
             WeaponAPI.WeaponType.BALLISTIC -> Misc.MOUNT_BALLISTIC

@@ -135,7 +135,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
                 addText("Add a new design", Misc.getBasePlayerColor())
                 centerText()
                 onHoverEnter {
-                    playScrollSound()
+                    playSound("ui_button_mouseover", 1f, 1f)
                     backgroundAlpha = 0.5f
                 }
                 onHoverExit {
@@ -358,7 +358,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
             }
 
             onHoverEnter {
-                playScrollSound()
+                playSound("ui_button_mouseover", 1f, 1f)
                 backgroundAlpha = 0.6f
             }
             onHoverExit {
@@ -387,7 +387,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
             }
 
             onHoverEnter {
-                playScrollSound()
+                playSound("ui_button_mouseover", 1f, 1f)
                 backgroundAlpha = 0.6f
             }
             onHoverExit {
@@ -427,7 +427,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
             }
 
             onHoverEnter {
-                playScrollSound()
+                playSound("ui_button_mouseover", 1f, 1f)
                 backgroundAlpha = 0.6f
             }
             onHoverExit {
@@ -552,6 +552,10 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
                 backgroundAlpha = 0.0f
                 backgroundColor = Misc.getDarkPlayerColor()
                 renderBorder = false
+
+                onHoverEnter {
+                    playSound("ui_button_mouseover", 1f, 1f)
+                }
 
             }
             if (first) {

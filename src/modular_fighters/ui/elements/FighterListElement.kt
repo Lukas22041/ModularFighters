@@ -32,7 +32,7 @@ class FighterListElement(var data: ModularFighterData, tooltip: TooltipMakerAPI,
         }
 
         onHoverEnter {
-            playScrollSound()
+            playSound("ui_button_mouseover", 1f, 1f)
             //backgroundAlpha = 0.3f
         }
         //onHoverExit { backgroundAlpha = 0f }
