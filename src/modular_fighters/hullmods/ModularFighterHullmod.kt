@@ -33,6 +33,21 @@ class ModularFighterHullmod : BaseHullMod() {
             wingSpec.addTag("independent_of_carrier")
         }
 
+        stats.ballisticWeaponDamageMult.modifyMult(id, data.lastStatsObject.damageMult.modifiedValue)
+        stats.energyWeaponDamageMult.modifyMult(id, data.lastStatsObject.damageMult.modifiedValue)
+        stats.missileWeaponDamageMult.modifyMult(id, data.lastStatsObject.damageMult.modifiedValue)
+
+        stats.ballisticWeaponRangeBonus.modifyMult(id, data.lastStatsObject.rangeMult.modifiedValue)
+        stats.energyWeaponRangeBonus.modifyMult(id, data.lastStatsObject.rangeMult.modifiedValue)
+        stats.missileWeaponRangeBonus.modifyMult(id, data.lastStatsObject.rangeMult.modifiedValue)
+
+        stats.ballisticRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+        stats.energyRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+        stats.missileRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+
+        stats.ballisticAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+        stats.energyAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+        stats.missileAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
 
     }
 

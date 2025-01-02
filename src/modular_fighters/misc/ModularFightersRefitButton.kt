@@ -58,7 +58,7 @@ class ModularFightersRefitButton : BaseRefitButton() {
     }
 
     override fun initPanel(backgroundPanel: CustomPanelAPI?, member: FleetMemberAPI?, variant: ShipVariantAPI?, market: MarketAPI?) {
-        var creator = LPCDesignerPanel(backgroundPanel!!)
+        var creator = LPCDesignerPanel(backgroundPanel!!, market)
         creator.init()
     }
 

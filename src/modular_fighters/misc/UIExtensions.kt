@@ -8,8 +8,8 @@ fun UIPanelAPI.getChildrenCopy() : List<UIComponentAPI> {
     return ReflectionUtils.invoke("getChildrenCopy", this) as List<UIComponentAPI>
 }
 
-fun UIPanelAPI.getChildrenNonCopy() : List<UIComponentAPI>  {
-    return ReflectionUtils.invoke("getChildrenNonCopy", this) as List<UIComponentAPI>
+fun UIPanelAPI.getChildrenNonCopy() : MutableList<UIComponentAPI>  {
+    return ReflectionUtils.invoke("getChildrenNonCopy", this) as MutableList<UIComponentAPI>
 }
 
 fun UIPanelAPI.getWidth() : Float  {

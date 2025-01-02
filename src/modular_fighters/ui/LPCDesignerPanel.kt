@@ -1,9 +1,12 @@
 package modular_fighters.ui
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.campaign.econ.MarketAPI
+import com.fs.starfarer.api.combat.WeaponAPI
 import com.fs.starfarer.api.fleet.FleetMemberType
 import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.CustomPanelAPI
+import com.fs.starfarer.api.ui.PositionAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
 import com.fs.starfarer.ui.impl.StandardTooltipV2
@@ -14,17 +17,17 @@ import lunalib.lunaExtensions.addLunaTextfield
 import lunalib.lunaUI.elements.LunaSpriteElement
 import modular_fighters.ModularFighterUtils
 import modular_fighters.components.ModularFighterData
-import modular_fighters.misc.ReflectionUtils
-import modular_fighters.misc.addTooltip
-import modular_fighters.misc.clearChildren
+import modular_fighters.misc.*
 import modular_fighters.ui.elements.*
 import org.lazywizard.lazylib.combat.entities.SimpleEntity
 import org.lazywizard.lazylib.ext.plus
 import org.lazywizard.lazylib.ext.rotate
 import org.lwjgl.util.vector.Vector2f
+import org.magiclib.kotlin.getStorageCargo
+import modular_fighters.ui.plugins.BackgroundPanelPlugin
 import java.awt.Color
 
-class LPCDesignerPanel(var parent: CustomPanelAPI) {
+class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
 
     companion object {
         var lastScrollerY = 0f
@@ -33,6 +36,8 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
     var modData = ModularFighterUtils.getData()
     var selectedListElement: FighterListElement? = null
+    var selectedMount: WeaponMountElement? = null
+
 
     fun init() {
         recreatePanel()
@@ -288,7 +293,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
             var mountSize = 30f
 
-            var mountElement = WeaponMountElement(mount, spec, scale, element, mountSize, mountSize)
+            var mountElement = WeaponMountElement(this, mount, spec, scale, element, mountSize, mountSize)
 
             var mountPosition = mount.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             mountPosition.y =- mountPosition.y //Need to invert Y
@@ -305,6 +310,17 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
                 var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
                 var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, spec, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
                 ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, mountElement.elementPanel, weaponDesc, 150f)
+            }
+
+            mountElement.onClick {
+                if (it.isLMBEvent) {
+                    openWeaponPicker(panel, element, mountElement)
+                }
+                if (it.isRMBEvent) {
+                    data.fittedWeapons.remove(mount.id)
+                    mountElement.playSound("ui_refit_slot_cleared_small", 1f, 1f)
+                    recreatePanel()
+                }
             }
 
         }
@@ -462,6 +478,124 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
 
 
+
+    }
+
+    fun openWeaponPicker(panel: CustomPanelAPI, element: TooltipMakerAPI, mountElement: WeaponMountElement) {
+
+        var data = selectedFighter
+
+        selectedMount = mountElement
+
+        var cargo = Global.getSector().playerFleet.cargo.createCopy()
+        if (market != null) {
+            var storage = market?.getStorageCargo()
+            if (storage != null) {
+                cargo.addAll(storage.createCopy())
+            }
+        }
+
+        var mount = mountElement.mount
+        cargo.sort()
+
+        var weaponsInCargo = cargo.weapons
+        var weapons: HashMap<WeaponSpecAPI, Int> = HashMap<WeaponSpecAPI, Int>()
+
+        for (wep in weaponsInCargo) {
+            var spec = Global.getSettings().getWeaponSpec(wep.item)
+            if (spec.size != mount.slotSize) continue
+
+            var add = false
+            if (mount.weaponType == WeaponAPI.WeaponType.UNIVERSAL) add = true
+            else if (mount.weaponType == WeaponAPI.WeaponType.BALLISTIC && (spec.mountType == WeaponAPI.WeaponType.BALLISTIC || spec.mountType == WeaponAPI.WeaponType.HYBRID || spec.mountType == WeaponAPI.WeaponType.COMPOSITE)) add = true
+            else if (mount.weaponType == WeaponAPI.WeaponType.ENERGY && (spec.mountType == WeaponAPI.WeaponType.ENERGY || spec.mountType == WeaponAPI.WeaponType.SYNERGY || spec.mountType == WeaponAPI.WeaponType.HYBRID)) add = true
+            else if (mount.weaponType == WeaponAPI.WeaponType.MISSILE && (spec.mountType == WeaponAPI.WeaponType.MISSILE || spec.mountType == WeaponAPI.WeaponType.COMPOSITE || spec.mountType == WeaponAPI.WeaponType.SYNERGY)) add = true
+
+            else if (mount.weaponType == WeaponAPI.WeaponType.HYBRID && (spec.mountType == WeaponAPI.WeaponType.HYBRID || spec.mountType == WeaponAPI.WeaponType.BALLISTIC || spec.mountType == WeaponAPI.WeaponType.ENERGY)) add = true
+            else if (mount.weaponType == WeaponAPI.WeaponType.COMPOSITE && (spec.mountType == WeaponAPI.WeaponType.COMPOSITE || spec.mountType == WeaponAPI.WeaponType.BALLISTIC || spec.mountType == WeaponAPI.WeaponType.MISSILE)) add = true
+            else if (mount.weaponType == WeaponAPI.WeaponType.SYNERGY && (spec.mountType == WeaponAPI.WeaponType.SYNERGY || spec.mountType == WeaponAPI.WeaponType.ENERGY || spec.mountType == WeaponAPI.WeaponType.MISSILE)) add = true
+
+            if (add) {
+                weapons.put(spec, wep.count)
+            }
+        }
+
+        var weaponsList = weapons.toList().sortedByDescending { it.first.getOrdnancePointCost(Global.getFactory().createPerson().stats) }.toMutableList()
+
+        var pWidth = 350f
+        var pHeight = 450f
+
+        var pickerElement = ComponentPickerBackgroundElement(this, element, pWidth, pHeight).apply {
+            enableTransparency = true
+            backgroundColor = Color(0, 0, 0)
+            borderAlpha = 1f
+            position.rightOfMid(mountElement.elementPanel, 35f)
+        }
+
+        /*pickerElement.onClickOutside {
+            it.consume()
+            selectedMount = null
+            recreatePanel()
+        }*/
+
+        var pickerList = pickerElement.elementPanel.createUIElement(pWidth, pHeight, true)
+        pickerList.position.inTL(0f, 0f)
+
+        var tooltipAnchor = pickerList.addLunaElement(0f, 0f)
+
+        var first = true
+        for ((weapon, quantity) in weaponsList) {
+            var weaponListElement = WeaponListElement(mountElement, weapon, quantity, pickerList, pWidth - 5, 70f).apply {
+                enableTransparency = true
+                backgroundAlpha = 0.0f
+                backgroundColor = Misc.getDarkPlayerColor()
+                renderBorder = false
+
+            }
+            if (first) {
+                first = false
+                weaponListElement.position.inTL(5f, 3f)
+            }
+            pickerList.addSpacer(3f)
+
+            var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
+            var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, weapon, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
+            ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, weaponListElement.elementPanel, weaponDesc, 50f)
+            weaponDesc.setBeforeShowing {
+                ReflectionUtils.invokeByNameAlone("setTooltipPositionRelativeToAnchor", weaponListElement.elementPanel, -weaponDesc.width - 10, (pickerElement.height - weaponDesc.getHeight()) / 2, pickerElement.elementPanel)
+            }
+
+            weaponListElement.onClick {
+                if (!it.isLMBEvent) return@onClick
+
+                if (weapon.mountType == WeaponAPI.WeaponType.BALLISTIC || weapon.mountType == WeaponAPI.WeaponType.HYBRID || weapon.mountType == WeaponAPI.WeaponType.COMPOSITE || weapon.mountType == WeaponAPI.WeaponType.UNIVERSAL) {
+                    weaponListElement.playSound("ui_refit_slot_filled_ballistic_small", 1f, 1f)
+                }
+                if (weapon.mountType == WeaponAPI.WeaponType.ENERGY) {
+                    weaponListElement.playSound("ui_refit_slot_filled_energy_small", 1f, 1f)
+                }
+                if (weapon.mountType == WeaponAPI.WeaponType.MISSILE || weapon.mountType == WeaponAPI.WeaponType.SYNERGY) {
+                    weaponListElement.playSound("ui_refit_slot_filled_missile_small", 1f, 1f)
+                }
+
+                data.fittedWeapons.set(mount.id, weapon.weaponId)
+                recreatePanel()
+            }
+
+        }
+        pickerList.addSpacer(3f)
+        tooltipAnchor.position.inTL(0f, pHeight / 2)
+
+
+        pickerElement.elementPanel.addUIElement(pickerList)
+        pickerList.position.inTL(0f, 0f)
+
+        /*var plugin = BackgroundPanelPlugin(panel)
+        var popupPanel = panel.createCustomPanel(pWidth, pHeight, plugin)
+        plugin.panel = popupPanel
+        panel.addComponent(popupPanel)
+
+        popupPanel.position.inTL(mountElement.x, 0f)*/
 
     }
 
