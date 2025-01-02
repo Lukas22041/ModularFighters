@@ -36,11 +36,11 @@ class WeaponMountElement(var designer: LPCDesignerPanel, var mount: WeaponSlotAP
         renderBackground = false
 
         onClick {
-            playSound("ui_button_mouseover", 1f, 1f)
+            playClickSound()
         }
 
         onHoverEnter {
-            playScrollSound()
+            playSound("ui_button_mouseover", 1f, 1f)
         }
 
         if (weapon != null) {
