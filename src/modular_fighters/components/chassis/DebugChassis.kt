@@ -24,7 +24,7 @@ class DebugChassis : BaseFighterChassis() {
         stats.hitpoints.modifyFlat(getId(), 600f)
         stats.armor.modifyFlat(getId(), 250f)
 
-        stats.attackRunRange.modifyFlat(getId(), 600f)
+        //stats.attackRunRange.modifyFlat(getId(), 600f)
         stats.baseValue.modifyFlat(getId(), 4000f)
     }
 

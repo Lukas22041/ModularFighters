@@ -20,7 +20,7 @@ class FighterStatsObject {
 
     var formation: FormationType = FormationType.V
     var engagementRange = MutableStat(0f)
-    var attackRunRange = MutableStat(0f)
+    //var attackRunRange = MutableStat(0f)
     var baseValue = MutableStat(1000f)
 
     var damageMult = MutableStat(1f)

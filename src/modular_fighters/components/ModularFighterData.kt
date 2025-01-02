@@ -14,6 +14,7 @@ import modular_fighters.misc.ReflectionUtils
 import modular_fighters.misc.setArmorRating
 import modular_fighters.misc.setHitpoints
 import modular_fighters.modifier.FighterStatsObject
+import org.lazywizard.lazylib.MathUtils
 
 class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
 
@@ -38,7 +39,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
 
         //DEBUG
-        fittedWeapons.set("WS 000", "minipulser")
+        //fittedWeapons.set("WS 000", "minipulser")
     }
 
     fun getChassis() : BaseFighterChassis {
@@ -167,8 +168,20 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
         wingSpec.formation = stats.formation
         wingSpec.range = stats.engagementRange.modifiedValue
-        wingSpec.attackRunRange = stats.attackRunRange.modifiedValue
+        //wingSpec.attackRunRange = stats.attackRunRange.modifiedValue
         wingSpec.baseValue = stats.baseValue.modifiedValue
+
+        //Calc Attack run Range
+        var highestRange = 100f
+        for (weapon in fittedWeapons) {
+            var spec = Global.getSettings().getWeaponSpec(weapon.value)
+            if (spec.maxRange >= highestRange) {
+                highestRange = spec.maxRange
+            }
+        }
+        highestRange += 50f
+        highestRange = MathUtils.clamp(highestRange, 200f, 2000f)
+        wingSpec.attackRunRange = highestRange
 
         //Variant Data
         variant.weaponGroups.clear()
