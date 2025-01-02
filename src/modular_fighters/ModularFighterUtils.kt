@@ -18,16 +18,4 @@ object ModularFighterUtils {
         return data
     }
 
-    fun updateSpecsToMatchData() {
-        val data = getData()
-
-        for ((spec, fighterData) in data.fighterData) {
-            updateSpecToMatchData(Global.getSettings().getHullSpec(spec), fighterData)
-        }
-    }
-
-    fun updateSpecToMatchData(spec: ShipHullSpecAPI, fighterData: ModularFighterData) {
-
-    }
-
 }

@@ -33,8 +33,11 @@ class ModularFightersModPlugin : BaseModPlugin() {
         LPCDesignerPanel.selectedFighter =  ModularFighterUtils.getData().fighterData.values.first()
         LPCDesignerPanel.lastScrollerY = 0f
 
-        ModularFighterUtils.updateSpecsToMatchData()
-
+        //Load Data in to Specs on load.
+        val data = ModularFighterUtils.getData()
+        for ((spec, fighterData) in data.fighterData) {
+           fighterData.applyDataToSpecs()
+        }
 
 
 

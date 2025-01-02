@@ -8,6 +8,8 @@ abstract class BaseFighterComponent {
 
     lateinit var spec: ComponentPluginLoader.ComponentSpec
 
+    fun getId() = spec.id
+
     abstract fun getName() : String
 
     abstract fun addComponentTooltip(tooltip: TooltipMakerAPI)

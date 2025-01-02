@@ -6,8 +6,9 @@ import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.components.engines.BaseFighterEngine
 import modular_fighters.components.engines.DebugEngine
 import modular_fighters.components.subsystems.BaseFighterSubsystem
+import modular_fighters.modifier.FighterStatsObject
 
-class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, variantId: String, var name: String) {
+class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
 
     var chassisId = "debug_chassis"
     var engineId = "debug_engine"
@@ -17,10 +18,19 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
     @Transient private var engine: BaseFighterEngine? = DebugEngine()
     @Transient private var subsystems: HashMap<Int, BaseFighterSubsystem?>? = null
 
+    //Slot / WeaponSpecId
+    var fittedWeapons = HashMap<String, String>()
+
     init {
         subsystemIds[0] = "debug_subsystem"
         subsystemIds[1] = null
         subsystemIds[2] = null
+        subsystemIds[3] = null
+        subsystemIds[4] = null
+
+
+        //DEBUG
+        fittedWeapons.set("WS 000", "minipulser")
     }
 
     fun getChassis() : BaseFighterChassis {
@@ -37,6 +47,19 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         chassis!!.spec = spec
     }
 
+    fun setChassisAndClear(id: String) {
+        setChassis(id)
+
+        subsystemIds.clear()
+        subsystemIds[0] = null
+        subsystemIds[1] = null
+        subsystemIds[2] = null
+        subsystemIds[3] = null
+        subsystemIds[4] = null
+
+        subsystems = null
+        initSubsystems()
+    }
 
 
     fun getEngine() : BaseFighterChassis {
@@ -79,11 +102,14 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
             subsystems!![0] = null
             subsystems!![1] = null
             subsystems!![2] = null
+            subsystems!![3] = null
+            subsystems!![4] = null
 
-            if (subsystemIds.get(0) != null)  subsystems!![0] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[0]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
+            if (subsystemIds.get(0) != null) subsystems!![0] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[0]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
             if (subsystemIds.get(1) != null) subsystems!![1] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[1]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
             if (subsystemIds.get(2) != null) subsystems!![2] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[2]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
-
+            if (subsystemIds.get(3) != null) subsystems!![3] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[3]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
+            if (subsystemIds.get(4) != null) subsystems!![4] = Global.getSettings().scriptClassLoader.loadClass(ComponentPluginLoader.getSpec(subsystemIds[4]!!)!!.pluginPath).newInstance() as BaseFighterSubsystem
         }
     }
 
@@ -94,7 +120,21 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
 
 
-    fun applyData() {
+    fun applyDataToSpecs() {
+        var chassis = getChassis()
+        var engine = getEngine()
+        var subsystems = getAllSubsystems()
+
+        var stats = FighterStatsObject()
+
+        chassis.applyStats(stats)
+        engine.applyStats(stats)
+        subsystems.forEach { subsystem -> subsystem.applyStats(stats) }
+
+
+        var fighterSpec = getSpec()
+        var wingSpec = Global.getSettings().getFighterWingSpec(fighterWingSpecId)
+        var variantSpec = Global.getSettings().getVariant(variantId)
 
     }
 

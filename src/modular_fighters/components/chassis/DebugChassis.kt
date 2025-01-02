@@ -16,7 +16,7 @@ class DebugChassis : BaseFighterChassis() {
     }
 
     override fun applyStats(stats: FighterStatsObject) {
-
+        stats.numFighters.modifyFlat(getId(), 3f)
     }
 
 }

@@ -56,7 +56,7 @@ class WeaponMountElement(var mount: WeaponSlotAPI, var weapon: WeaponSpecAPI?, v
     override fun advance(amount: Float) {
         super.advance(amount)
 
-        if (isHovering || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) fade += 10 * amount
+        if (isHovering || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) fade += 10 * amount
         else fade -= 10 * amount
         fade = MathUtils.clamp(fade, 0f, 1f)
     }

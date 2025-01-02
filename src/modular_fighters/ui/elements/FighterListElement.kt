@@ -2,6 +2,7 @@ package modular_fighters.ui.elements
 
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.ui.Fonts
+import com.fs.starfarer.api.ui.LabelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import lunalib.lunaUI.elements.LunaElement
 import modular_fighters.components.ModularFighterData
@@ -14,6 +15,8 @@ class FighterListElement(var data: ModularFighterData, tooltip: TooltipMakerAPI,
     var baseW = sprite.width
     var baseH = sprite.height
 
+    var namePara: LabelAPI? = null
+
     init {
         enableTransparency = true
         renderBorder = false
@@ -21,8 +24,8 @@ class FighterListElement(var data: ModularFighterData, tooltip: TooltipMakerAPI,
         backgroundAlpha = 0f
 
         innerElement.setParaFont("graphics/fonts/victor14.fnt")
-        var namePara = innerElement.addPara("${data.name}", 0f)
-        namePara.position.inTL(60f, height / 2 - namePara.computeTextHeight(namePara.text) / 2)
+        namePara = innerElement.addPara("${data.name}", 0f)
+        namePara!!.position.inTL(60f, height / 2 - namePara!!.computeTextHeight(namePara!!.text) / 2)
 
         onClick {
             playClickSound()

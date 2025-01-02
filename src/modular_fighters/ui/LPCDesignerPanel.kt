@@ -1,14 +1,16 @@
 package modular_fighters.ui
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
-import com.fs.starfarer.loading.specs.BaseWeaponSpec
 import com.fs.starfarer.ui.impl.StandardTooltipV2
 import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
+import lunalib.lunaExtensions.addLunaTextfield
+import lunalib.lunaUI.elements.LunaElement
 import lunalib.lunaUI.elements.LunaSpriteElement
 import modular_fighters.ModularFighterUtils
 import modular_fighters.components.ModularFighterData
@@ -30,6 +32,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
     }
 
     var modData = ModularFighterUtils.getData()
+    var selectedListElement: FighterListElement? = null
 
     fun init() {
         recreatePanel()
@@ -91,6 +94,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
             if (index >= modData.visibleEntries) break
 
             var element = FighterListElement(data, listElement, width - 12f, 50f)
+            if (selectedFighter == data) selectedListElement = element
 
             if (first) {
                 first = false
@@ -106,6 +110,7 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
             element.onClick {
                 selectedFighter = element.data
+                selectedListElement = element
                 recreatePanel()
             }
 
@@ -272,13 +277,18 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
         //Mounts
 
+        var fittedWeapons = data.fittedWeapons
         var mounts = chassis.getChassisSpec().allWeaponSlotsCopy.filter { !it.isDecorative }
         for (mount in mounts) {
-            var spec = Global.getSettings().getWeaponSpec("minipulser")
+
+            var spec: WeaponSpecAPI? = null
+            var weapon = fittedWeapons.get(mount.id)
+            if (weapon != null) spec = Global.getSettings().getWeaponSpec(weapon)
+            //var spec = Global.getSettings().getWeaponSpec("minipulser")
 
             var mountSize = 30f
 
-            var mountElement = WeaponMountElement(mount, null, scale, element, mountSize, mountSize)
+            var mountElement = WeaponMountElement(mount, spec, scale, element, mountSize, mountSize)
 
             var mountPosition = mount.computePosition(placeholderEntity).rotate(90f).scale(scale) as Vector2f
             mountPosition.y =- mountPosition.y //Need to invert Y
@@ -290,9 +300,13 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
 
             mountElement.position.inTL(mountPosition.x - mountSize / 2, mountPosition.y - mountSize / 2)
 
-            var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
-            var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, spec, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
-            ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, mountElement.elementPanel, weaponDesc, 150f)
+
+            if (spec != null) {
+                var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
+                var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, spec, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable
+                ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, mountElement.elementPanel, weaponDesc, 150f)
+            }
+
         }
 
 
@@ -301,6 +315,105 @@ class LPCDesignerPanel(var parent: CustomPanelAPI) {
         var decorativeMounts = chassisSpec.builtInWeapons.map { chassisSpec.getWeaponSlot(it.key) }.filter { it.isDecorative }
         decorativeMounts = decorativeMounts
             .filter { it.id != "modular_fighters_engine_box" && it.id != "modular_fighters_engine_pos" && it.id != "modular_fighters_subsystem_box" && it.id != "modular_fighters_subsystem_pos" }
+
+
+
+
+
+        var finishBWidth = 150f
+        var finishBHeight = 30f
+        //Complete Design/Craft Button
+        var finishButton = element.addLunaElement(finishBWidth, finishBHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+
+                data.applyDataToSpecs()
+                Global.getSector().playerFleet.cargo.addFighters(data.fighterWingSpecId, 1)
+                Global.getSector().campaignUI.messageDisplay.addMessage("Crafted 1 ${data.name}-Wing LPC")
+
+                recreatePanel()
+            }
+
+            onHoverEnter {
+                playScrollSound()
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            innerElement.setParaFont("graphics/fonts/victor14.fnt")
+            var textPara = innerElement.addPara("Complete Design", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(finishBWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, finishBHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+
+            position.inTL(width - finishBWidth - 10f, height - finishBHeight - 10f)
+        }
+
+
+        var helpButtonWidth = 30f
+        var helpButtonHeight = 30f
+        //Complete Design/Craft Button
+        var helpButton = element.addLunaElement(helpButtonWidth, helpButtonHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+            }
+
+            onHoverEnter {
+                playScrollSound()
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            innerElement.setParaFont("graphics/fonts/victor14.fnt")
+            var textPara = innerElement.addPara("?", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(helpButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, helpButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+
+            position.leftOfTop(finishButton.elementPanel, 5f)
+        }
+
+        var nameBWidth = 170f
+        var nameBHeight = 25f
+        //Complete Design/Craft Button
+        var nameField = element.addLunaTextfield(data.name, false, nameBWidth, nameBHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+            }
+
+            onHoverEnter {
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            this.changeFont("graphics/fonts/victor14.fnt")
+           /* var textPara = innerElement.addPara("Complete Design", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(nameBWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, nameBHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)*/
+
+            position.aboveRight(finishButton.elementPanel, 5f)
+
+            advance {
+                if (data.name != this.getText()) {
+                    data.name = this.getText()
+                    selectedListElement?.namePara?.text = data.name
+                }
+            }
+
+        }
 
     }
 
