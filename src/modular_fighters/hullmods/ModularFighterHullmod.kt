@@ -49,6 +49,9 @@ class ModularFighterHullmod : BaseHullMod() {
         stats.energyAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
         stats.missileAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
 
+        stats.weaponTurnRateBonus.modifyFlat(id, 10f)
+        stats.weaponTurnRateBonus.modifyMult(id, data.lastStatsObject.weaponTurnRate.modifiedValue)
+        stats.autofireAimAccuracy.modifyFlat(id, data.lastStatsObject.autoFireAim.modifiedValue)
     }
 
     override fun applyEffectsAfterShipCreation(ship: ShipAPI?, id: String?) {

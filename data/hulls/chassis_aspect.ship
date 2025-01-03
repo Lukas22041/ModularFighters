@@ -1,6 +1,6 @@
 {
-  "hullName": "Debug Chassis",
-  "hullId": "debug_chassis",
+  "hullName": "Aspect Chassis",
+  "hullId": "chassis_aspect",
   "hullSize": "FIGHTER",
   "spriteName": "graphics/chassis/debug_chassis.png",
   "style": "OMEGA",
@@ -11,6 +11,10 @@
   "shieldCenter": [0, 0],
   "shieldRadius": 28,
   "viewOffset": 0,
+  "builtInMods": [
+        "automated",
+        "turretgyros"
+    ],
   "builtInWeapons": {
     "WS0001": "modular_fighters_engine_pos",
     "WS0002": "modular_fighters_subsystem_pos",
@@ -84,8 +88,8 @@
   ],
   "bounds": [
     24, 1,
-    -9, 12,
-    -13, -10,
-    8, -9
+    -13.5, 15,
+    -14, -13.5,
+    6.5, -12
   ]
 }

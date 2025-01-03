@@ -12,10 +12,18 @@ abstract class BaseFighterComponent {
 
     abstract fun getName() : String
 
-    abstract fun addComponentTooltip(tooltip: TooltipMakerAPI)
-
     abstract fun applyStats(stats: FighterStatsObject)
 
-    fun applyAfterFighterCreation(ship: ShipAPI) { }
+    open fun getDesignType(): String = ""
+
+    open fun applyAfterFighterCreation(ship: ShipAPI) { }
+
+    open fun addPreTooltip(tooltip: TooltipMakerAPI) {
+
+    }
+
+    open fun addPostTooltip(tooltip: TooltipMakerAPI) {
+
+    }
 
 }

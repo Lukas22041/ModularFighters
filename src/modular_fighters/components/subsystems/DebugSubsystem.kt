@@ -12,10 +12,6 @@ class DebugSubsystem : BaseFighterSubsystem() {
         return "Debug Subsystem"
     }
 
-    override fun addComponentTooltip(tooltip: TooltipMakerAPI) {
-
-    }
-
     override fun applyStats(stats: FighterStatsObject) {
 
     }

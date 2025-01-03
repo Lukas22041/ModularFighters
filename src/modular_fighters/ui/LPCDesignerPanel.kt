@@ -5,6 +5,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.combat.WeaponAPI
 import com.fs.starfarer.api.fleet.FleetMemberType
 import com.fs.starfarer.api.loading.WeaponSpecAPI
+import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.PositionAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
@@ -25,6 +26,7 @@ import org.lazywizard.lazylib.ext.rotate
 import org.lwjgl.util.vector.Vector2f
 import org.magiclib.kotlin.getStorageCargo
 import modular_fighters.ui.plugins.BackgroundPanelPlugin
+import modular_fighters.ui.tooltips.ComponentTooltipCreator
 import java.awt.Color
 
 class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
@@ -209,6 +211,8 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
         //Holographic Chassis Preview
         var chassisSlotDisplayer = ChassisSelectorDisplayElement(chassis, element, 84f, 84f)
         chassisSlotDisplayer.position.inTL(50f, 50f)
+
+        element.addTooltipTo(ComponentTooltipCreator(chassis), chassisSlotDisplayer.elementPanel, TooltipMakerAPI.TooltipLocation.LEFT)
 
         //Engine Slot Elements
         var enginePosition = Vector2f(center)
@@ -498,6 +502,18 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
             }
         }
 
+        if (Global.getSettings().isDevMode) {
+            cargo.clear()
+            for (weapon in Global.getSettings().allWeaponSpecs) {
+                if (weapon.mountType == WeaponAPI.WeaponType.DECORATIVE) continue
+                if (weapon.mountType == WeaponAPI.WeaponType.BUILT_IN) continue
+                if (weapon.mountType == WeaponAPI.WeaponType.SYSTEM) continue
+                if (weapon.mountType == WeaponAPI.WeaponType.STATION_MODULE) continue
+                cargo.addWeapons(weapon.weaponId, 100)
+            }
+        }
+
+
         var mount = mountElement.mount
         cargo.sort()
 
@@ -544,6 +560,16 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
         var pickerList = pickerElement.elementPanel.createUIElement(pWidth, pHeight, true)
         pickerList.position.inTL(0f, 0f)
 
+        if (weapons.isEmpty()) {
+            var para = pickerList.addTitle("No suitable weapons in storage", Misc.getBasePlayerColor())
+            para.position.inTL(pWidth / 2f - para.computeTextWidth(para.text) / 2, pHeight / 2 - 20f)
+        }
+
+        var isDevmode = Global.getSettings().isDevMode
+
+        if (isDevmode) pickerList.addSectionHeading("Devmode List", Alignment.MID, 0f).apply {
+            position.setSize(position.width+ 3f, position.height)
+        }
 
         var first = true
         for ((weapon, quantity) in weaponsList) {
@@ -561,8 +587,11 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
             if (first) {
                 first = false
                 weaponListElement.position.inTL(5f, 3f)
+                if (isDevmode) weaponListElement.position.inTL(5f, 23f)
             }
             pickerList.addSpacer(3f)
+            if (isDevmode) pickerList.addSpacer(3f)
+
 
             var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
             var weaponDesc = ReflectionUtils.invokeStatic(3, "createWeaponTooltip", StandardTooltipV2::class.java, weapon, Global.getSector().playerPerson.stats, memberStats) as StandardTooltipV2Expandable

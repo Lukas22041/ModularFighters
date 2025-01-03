@@ -2,13 +2,11 @@ package modular_fighters.components
 
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.ShipHullSpecAPI
-import com.fs.starfarer.api.combat.WeaponAPI
 import com.fs.starfarer.api.loading.WeaponGroupSpec
 import com.fs.starfarer.api.loading.WeaponGroupType
+import com.fs.starfarer.api.loading.WingRole
 import modular_fighters.components.chassis.BaseFighterChassis
-import modular_fighters.components.chassis.DebugChassis
 import modular_fighters.components.engines.BaseFighterEngine
-import modular_fighters.components.engines.DebugEngine
 import modular_fighters.components.subsystems.BaseFighterSubsystem
 import modular_fighters.misc.ReflectionUtils
 import modular_fighters.misc.setArmorRating
@@ -18,8 +16,8 @@ import org.lazywizard.lazylib.MathUtils
 
 class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
 
-    var chassisId = "debug_chassis"
-    var engineId = "debug_engine"
+    var chassisId = "chassis_aspect"
+    var engineId = "engine_cryomatter"
     var subsystemIds = HashMap<Int, String?>()
 
     @Transient private var chassis: BaseFighterChassis? = null
@@ -171,6 +169,16 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         //wingSpec.attackRunRange = stats.attackRunRange.modifiedValue
         wingSpec.baseValue = stats.baseValue.modifiedValue
 
+        var op = 0f
+        //Ordnance Cost from weapons
+        for (weapon in fittedWeapons) {
+            var spec = Global.getSettings().getWeaponSpec(weapon.value)
+            op += spec.getOrdnancePointCost(Global.getFactory().createPerson().stats)
+        }
+        op += stats.opCost.modifiedValue
+        wingSpec.setOpCost(op)
+
+
         //Calc Attack run Range
         var highestRange = 100f
         for (weapon in fittedWeapons) {
@@ -181,6 +189,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         }
         highestRange += 50f
         highestRange = MathUtils.clamp(highestRange, 200f, 2000f)
+        if (stats.attackAtAngle) highestRange - 100f
         wingSpec.attackRunRange = highestRange
 
         //Variant Data
@@ -193,15 +202,51 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         }
 
         //Designation
+        wingSpec.role = WingRole.FIGHTER
         variant.setVariantDisplayName("Fighter")
         wingSpec.roleDesc = "Fighter"
-        if (fighterSpec.allWeaponSlotsCopy.any { it.weaponType == WeaponAPI.WeaponType.MISSILE || it.weaponType == WeaponAPI.WeaponType.COMPOSITE || it.weaponType == WeaponAPI.WeaponType.SYNERGY } ) {
+
+        if (stats.role == WingRole.BOMBER) {
+            wingSpec.role = WingRole.BOMBER
             wingSpec.roleDesc = "Bomber"
             variant.setVariantDisplayName("Bomber")
         }
+
+        if (stats.role == WingRole.INTERCEPTOR) {
+            wingSpec.role = WingRole.INTERCEPTOR
+            wingSpec.roleDesc = "Interceptor"
+            variant.setVariantDisplayName("Interceptor")
+        }
+
+        if (stats.role == WingRole.SUPPORT) {
+            wingSpec.role = WingRole.SUPPORT
+            wingSpec.roleDesc = "Support"
+            variant.setVariantDisplayName("Support")
+        }
+
+        if (stats.roleDesc != "") {
+            wingSpec.roleDesc = stats.roleDesc
+        }
+
+
+        //Hullmods
+        fighterSpec.builtInMods.clear()
+        variant.clearHullMods()
+        variant.clearPermaMods()
+
+        fighterSpec.addBuiltInMod("modular_fighters_hullmod")
+        variant.addPermaMod("modular_fighters_hullmod")
+
+        fighterSpec.addBuiltInMod("no_weapon_flux")
+        variant.addPermaMod("no_weapon_flux")
+
+        chassis.getChassisSpec().builtInMods.forEach {
+            fighterSpec.addBuiltInMod(it)
+            variant.addPermaMod(it)
+        }
     }
 
-    //Mounts, Engines, Hullstyle, Sprite, Bounds, Shields, Flux Stats
+    //Mounts, Engines, Hullstyle, Sprite, Bounds, Shields, Flux Stats, Hullmods
     //Bounds seem to be handled by the sprite spec, colission radius however is just set high by default in the spec.
     fun applyChassisDataToSpec(spec: ShipHullSpecAPI, chassis: BaseFighterChassis) {
         var chassisSpec = chassis.getChassisSpec()
@@ -234,6 +279,8 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
         //Flux
         ReflectionUtils.invoke("setReactorSpec", spec, ReflectionUtils.invoke("getReactorSpec", chassisSpec))
+
+
     }
 
 }

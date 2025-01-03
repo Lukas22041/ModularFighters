@@ -1,7 +1,7 @@
 id,plugin
 ,
 #Chassis,
-debug_chassis,modular_fighters.components.chassis.DebugChassis
+chassis_aspect,modular_fighters.components.chassis.AspectChassis
 ,
 ,
 ,
@@ -10,7 +10,7 @@ debug_chassis,modular_fighters.components.chassis.DebugChassis
 ,
 ,
 #Engines,
-debug_engine,modular_fighters.components.engines.DebugEngine
+engine_cryomatter,modular_fighters.components.engines.CryomatterEngine
 ,
 ,
 ,
