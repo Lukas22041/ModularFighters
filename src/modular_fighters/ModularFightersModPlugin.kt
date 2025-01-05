@@ -4,6 +4,8 @@ import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import lunalib.lunaRefit.LunaRefitManager
 import modular_fighters.components.ComponentPluginLoader
+import modular_fighters.hullmods.HullmodAdderScript
+import modular_fighters.hullmods.NonStandardFighterDesign
 import modular_fighters.misc.ConstantTimeIncreaseScript
 import modular_fighters.misc.ModularFightersRefitButton
 import modular_fighters.ui.LPCDesignerPanel
@@ -17,6 +19,8 @@ class ModularFightersModPlugin : BaseModPlugin() {
     }
 
     override fun onGameLoad(newGame: Boolean) {
+
+        Global.getSector().addTransientScript(HullmodAdderScript())
 
         if (!Global.getSector().hasScript(ConstantTimeIncreaseScript::class.java)) {
             Global.getSector().addScript(ConstantTimeIncreaseScript())

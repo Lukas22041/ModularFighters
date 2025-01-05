@@ -24,7 +24,7 @@ class ModularFighterHullmod : BaseHullMod() {
         var data = ModularFighterUtils.getData().fighterData.get(spec.baseHullId) ?: return
         var wingSpec = Global.getSettings().getFighterWingSpec(data.fighterWingSpecId) ?: return
 
-        if (data.lastStatsObject.isIndependent) {
+        if (data.lastStatsObject.attackAtAngle) {
             wingSpec.addTag("rapid_reform")
             wingSpec.addTag("leader_no_swarm")
             wingSpec.addTag("wingmen_no_swarm")

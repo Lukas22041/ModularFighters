@@ -12,9 +12,9 @@
   "shieldRadius": 28,
   "viewOffset": 0,
   "builtInMods": [
-        "automated",
-        "turretgyros"
-    ],
+    "automated",
+    "turretgyros"
+  ],
   "builtInWeapons": {
     "WS0001": "modular_fighters_engine_pos",
     "WS0002": "modular_fighters_subsystem_pos",

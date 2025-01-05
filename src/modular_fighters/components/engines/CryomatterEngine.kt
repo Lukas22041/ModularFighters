@@ -6,7 +6,7 @@ import modular_fighters.modifier.FighterStatsObject
 
 class CryomatterEngine : BaseFighterEngine() {
     override fun getName(): String {
-        return "Debug Engine"
+        return "Cryomatter Engine"
     }
 
     override fun applyStats(stats: FighterStatsObject) {
