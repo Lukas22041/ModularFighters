@@ -6,6 +6,8 @@ import modular_fighters.modifier.FighterStatsObject
 
 abstract class BaseFighterComponent {
 
+    enum class ComponentType { CHASSIS, ENGINE, SUBSYSTEM }
+
     lateinit var spec: ComponentPluginLoader.ComponentSpec
 
     fun getId() = spec.id

@@ -34,7 +34,8 @@ class FighterStatsObject {
 
     var damageMult = MutableStat(1f)
     var rangeMult = MutableStat(1f)
-    var fireRateMult = MutableStat(1f)
+    var speedMult = MutableStat(1f)
+    //var fireRateMult = MutableStat(1f)
 
     var isIndependent = false
     var attackAtAngle = false

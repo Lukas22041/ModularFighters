@@ -64,8 +64,12 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         subsystemIds[3] = null
         subsystemIds[4] = null
 
+        fittedWeapons.clear()
+
         subsystems = null
         initSubsystems()
+
+        applyDataToSpecs()
     }
 
 
@@ -149,11 +153,11 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         fighterSpec.manufacturer = "Modular Design"
         fighterSpec.hullName = name
 
-        fighterSpec.engineSpec.maxSpeed = stats.topSpeed.modifiedValue
-        fighterSpec.engineSpec.acceleration = stats.acceleration.modifiedValue
-        fighterSpec.engineSpec.deceleration = stats.deceleration.modifiedValue
-        fighterSpec.engineSpec.maxTurnRate = stats.maxTurnRate.modifiedValue
-        fighterSpec.engineSpec.turnAcceleration = stats.turnAcceleration.modifiedValue
+        fighterSpec.engineSpec.maxSpeed = stats.topSpeed.modifiedValue * stats.speedMult.modifiedValue
+        fighterSpec.engineSpec.acceleration = stats.acceleration.modifiedValue * stats.speedMult.modifiedValue
+        fighterSpec.engineSpec.deceleration = stats.deceleration.modifiedValue * stats.speedMult.modifiedValue
+        fighterSpec.engineSpec.maxTurnRate = stats.maxTurnRate.modifiedValue * stats.speedMult.modifiedValue
+        fighterSpec.engineSpec.turnAcceleration = stats.turnAcceleration.modifiedValue * stats.speedMult.modifiedValue
 
         fighterSpec.setHitpoints(stats.hitpoints.modifiedValue)
         fighterSpec.setArmorRating(stats.armor.modifiedValue)
@@ -193,6 +197,9 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         wingSpec.attackRunRange = highestRange
 
         //Variant Data
+        for (slotId in variant.fittedWeaponSlots) {
+            variant.clearSlot(slotId)
+        }
         variant.weaponGroups.clear()
         for ((slotId, specId) in fittedWeapons) {
             variant.addWeapon(slotId, specId)

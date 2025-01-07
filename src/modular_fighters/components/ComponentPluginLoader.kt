@@ -19,6 +19,7 @@ object ComponentPluginLoader {
             val row = CSV.getJSONObject(index)
 
             val id = row.getString("id")
+            if (id.isEmpty()) continue
             val pluginPath = row.getString("plugin")
 
             var spec = ComponentSpec(id, pluginPath)

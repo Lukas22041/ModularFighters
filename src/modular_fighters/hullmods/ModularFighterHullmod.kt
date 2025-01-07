@@ -41,13 +41,13 @@ class ModularFighterHullmod : BaseHullMod() {
         stats.energyWeaponRangeBonus.modifyMult(id, data.lastStatsObject.rangeMult.modifiedValue)
         stats.missileWeaponRangeBonus.modifyMult(id, data.lastStatsObject.rangeMult.modifiedValue)
 
-        stats.ballisticRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+       /* stats.ballisticRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
         stats.energyRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
         stats.missileRoFMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
 
         stats.ballisticAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
         stats.energyAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
-        stats.missileAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)
+        stats.missileAmmoRegenMult.modifyMult(id, data.lastStatsObject.fireRateMult.modifiedValue)*/
 
         stats.weaponTurnRateBonus.modifyFlat(id, 10f)
         stats.weaponTurnRateBonus.modifyMult(id, data.lastStatsObject.weaponTurnRate.modifiedValue)

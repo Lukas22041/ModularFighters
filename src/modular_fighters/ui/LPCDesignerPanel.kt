@@ -7,7 +7,6 @@ import com.fs.starfarer.api.fleet.FleetMemberType
 import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.CustomPanelAPI
-import com.fs.starfarer.api.ui.PositionAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
 import com.fs.starfarer.ui.impl.StandardTooltipV2
@@ -15,17 +14,23 @@ import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaExtensions.addLunaSpriteElement
 import lunalib.lunaExtensions.addLunaTextfield
+import lunalib.lunaUI.elements.LunaElement
 import lunalib.lunaUI.elements.LunaSpriteElement
 import modular_fighters.ModularFighterUtils
+import modular_fighters.components.BaseFighterComponent
+import modular_fighters.components.ComponentPluginLoader
 import modular_fighters.components.ModularFighterData
+import modular_fighters.components.chassis.BaseFighterChassis
+import modular_fighters.components.engines.BaseFighterEngine
+import modular_fighters.components.subsystems.BaseFighterSubsystem
 import modular_fighters.misc.*
+import modular_fighters.modifier.FighterStatsObject
 import modular_fighters.ui.elements.*
 import org.lazywizard.lazylib.combat.entities.SimpleEntity
 import org.lazywizard.lazylib.ext.plus
 import org.lazywizard.lazylib.ext.rotate
 import org.lwjgl.util.vector.Vector2f
 import org.magiclib.kotlin.getStorageCargo
-import modular_fighters.ui.plugins.BackgroundPanelPlugin
 import modular_fighters.ui.tooltips.ComponentTooltipCreator
 import java.awt.Color
 
@@ -213,6 +218,11 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
         chassisSlotDisplayer.position.inTL(50f, 50f)
 
         element.addTooltipTo(ComponentTooltipCreator(chassis), chassisSlotDisplayer.elementPanel, TooltipMakerAPI.TooltipLocation.LEFT)
+
+        chassisSlotDisplayer.onClick {
+            chassisSlotDisplayer.playClickSound()
+            openComponentPicker(BaseFighterComponent.ComponentType.CHASSIS, panel, element, chassisSlotDisplayer, 0)
+        }
 
         //Engine Slot Elements
         var enginePosition = Vector2f(center)
@@ -614,6 +624,94 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
                 }
 
                 data.fittedWeapons.set(mount.id, weapon.weaponId)
+                recreatePanel()
+            }
+
+        }
+        pickerList.addSpacer(3f)
+
+
+        pickerElement.elementPanel.addUIElement(pickerList)
+        pickerList.position.inTL(0f, 0f)
+
+        /*var plugin = BackgroundPanelPlugin(panel)
+        var popupPanel = panel.createCustomPanel(pWidth, pHeight, plugin)
+        plugin.panel = popupPanel
+        panel.addComponent(popupPanel)
+
+        popupPanel.position.inTL(mountElement.x, 0f)*/
+
+    }
+
+    fun openComponentPicker(componentType: BaseFighterComponent.ComponentType, panel: CustomPanelAPI, element: TooltipMakerAPI, selectorElement: LunaElement, slotId: Int) {
+
+        var data = selectedFighter
+
+        var pWidth = 350f
+        var pHeight = 400f
+
+        var components = ComponentPluginLoader.getAllComponents()
+        if (componentType == BaseFighterComponent.ComponentType.CHASSIS) components = components.filter { it is BaseFighterChassis }
+        if (componentType == BaseFighterComponent.ComponentType.ENGINE) components = components.filter { it is BaseFighterEngine }
+        if (componentType == BaseFighterComponent.ComponentType.SUBSYSTEM) components = components.filter { it is BaseFighterSubsystem }
+
+        var pickerElement = ComponentPickerBackgroundElement(this, element, pWidth, pHeight).apply {
+            enableTransparency = true
+            backgroundColor = Color(0, 0, 0)
+            borderAlpha = 1f
+            position.rightOfMid(selectorElement.elementPanel, 35f)
+        }
+
+        /*pickerElement.onClickOutside {
+            it.consume()
+            selectedMount = null
+            recreatePanel()
+        }*/
+
+        var pickerList = pickerElement.elementPanel.createUIElement(pWidth, pHeight, true)
+        pickerList.position.inTL(0f, 0f)
+
+        var comp = components.map { Pair(it, FighterStatsObject()).apply { first.applyStats(second) } }.sortedByDescending { it.second.opCost.modifiedValue }
+
+        var first = true
+        for ((component, stats) in comp) {
+            component.applyStats(stats)
+
+            var componentListElement = ComponentsListElement(stats, component, pickerList, pWidth - 5, 70f).apply {
+                enableTransparency = true
+                backgroundAlpha = 0.0f
+                backgroundColor = Misc.getDarkPlayerColor()
+                renderBorder = false
+
+                onHoverEnter {
+                    playSound("ui_button_mouseover", 1f, 1f)
+                }
+
+            }
+            if (first) {
+                first = false
+                componentListElement.position.inTL(5f, 3f)
+            }
+            pickerList.addSpacer(3f)
+
+
+            element.addTooltipTo(ComponentTooltipCreator(component), componentListElement.elementPanel, TooltipMakerAPI.TooltipLocation.LEFT)
+
+
+            componentListElement.onClick {
+                if (!it.isLMBEvent) return@onClick
+
+                componentListElement.playClickSound()
+                if (componentType == BaseFighterComponent.ComponentType.CHASSIS) {
+                    data.setChassisAndClear(component.getId())
+                }
+                else if (componentType == BaseFighterComponent.ComponentType.ENGINE) {
+                    data.setEngine(component.getId())
+                }
+                else if (componentType == BaseFighterComponent.ComponentType.SUBSYSTEM) {
+                    data.setSubsystemInSlot(slotId, component.getId())
+                }
+
                 recreatePanel()
             }
 

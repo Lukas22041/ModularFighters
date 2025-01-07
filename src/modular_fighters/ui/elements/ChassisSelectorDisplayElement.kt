@@ -64,11 +64,12 @@ class ChassisSelectorDisplayElement(var chassis: BaseFighterChassis, tooltip: To
 
         GL20.glUseProgram(shader)
 
-        var colorMult = Vector3f(0.3f, 0.6f, 1.5f)
-        var time = (Global.getSector().scripts.find { it is ConstantTimeIncreaseScript } as ConstantTimeIncreaseScript).time / 8
+
+        var colorMult = Vector3f(0.3f + 0.1f * fade, 0.6f + 0.2f * fade, 1.5f + 0.3f * fade)
+        var time = (Global.getSector().scripts.find { it is ConstantTimeIncreaseScript } as ConstantTimeIncreaseScript).time / (8-4*fade)
         GL20.glUniform3f(GL20.glGetUniformLocation(shader, "colorMult"), colorMult.x, colorMult.y, colorMult.z)
         GL20.glUniform1f(GL20.glGetUniformLocation(shader, "iTime"), time)
-        GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), 0.9f)
+        GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), 0.9f + 0.1f * fade)
 
         sprite.setSize(baseW * scale, baseH * scale)
         sprite.renderAtCenter(x + width / 2 - 1, y + height / 2 - 2)

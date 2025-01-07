@@ -11,16 +11,16 @@ class AspectChassis : BaseFighterChassis() {
     }
 
     override fun getName(): String {
-        return "Aspect Chassis"
+        return "Damaged Aspect Chassis"
     }
 
     override fun getDesignType(): String {
-        return "Omega"
+        return "Unknown"
     }
 
     override fun addPreTooltip(tooltip: TooltipMakerAPI) {
         tooltip.addPara("A unique chassis that split of from the remains of an alien type of design. " +
-                "A nimble but armored hull that unlike its original counterpart can not act independent of its mother ship due to malfunctions. ", 0f, Misc.getTextColor(), Misc.getHighlightColor())
+                "A nimble but armored hull that compared to its original counterpart is missing some functionalities due to malfunctions in the blueprint. ", 0f, Misc.getTextColor(), Misc.getHighlightColor())
     }
 
     override fun applyStats(stats: FighterStatsObject) {
@@ -35,6 +35,10 @@ class AspectChassis : BaseFighterChassis() {
         //Slightly worse than vanilla aspects
         stats.hitpoints.modifyFlat(getId(), 600f)
         stats.armor.modifyFlat(getId(), 300f)
+
+        stats.damageMult.modifyMult(getId(), 0.5f)
+        stats.rangeMult.modifyMult(getId(), 1f)
+        stats.speedMult.modifyMult(getId(), 1.2f)
 
         stats.baseValue.modifyFlat(getId(), 4000f)
 
