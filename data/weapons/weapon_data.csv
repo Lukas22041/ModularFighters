@@ -4,3 +4,8 @@ Engine Position,modular_fighters_engine_pos,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Engine Box,modular_fighters_engine_box,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Subsystem Position,modular_fighters_subsystem_pos,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Subsystem Box,modular_fighters_subsystem_box,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Huntress Mount Left,huntress_mount_left,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,43
+Huntress Mount Right,huntress_mount_right,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,43
+Huntress Side Left,huntress_side_left,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,43
+Huntress Side Right,huntress_side_right,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,43

@@ -16,8 +16,9 @@ abstract class BaseFighterChassis : BaseFighterComponent() {
 
     fun getSpriteName() = getChassisSpec().spriteName
 
-    fun getOutlineColor1() : Color = Color(0, 255, 90)
-    fun getOutlineColor2() : Color = Color(0, 90, 255)
+    open fun getOutlineColor1() : Color = Color(0, 255, 90)
+    open fun getOutlineColor2() : Color = Color(0, 90, 255)
+    open fun getOultineAlpha() : Float = 1f
 
     /*fun getOutlineColor1() : Color = Color(255, 0, 90)
     fun getOutlineColor2() : Color = Color(0, 90, 255)*/

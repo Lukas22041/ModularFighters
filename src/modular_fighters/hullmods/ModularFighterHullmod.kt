@@ -1,9 +1,8 @@
 package modular_fighters.hullmods
 
 import com.fs.starfarer.api.Global
-import com.fs.starfarer.api.combat.BaseHullMod
-import com.fs.starfarer.api.combat.MutableShipStatsAPI
-import com.fs.starfarer.api.combat.ShipAPI
+import com.fs.starfarer.api.combat.*
+import com.fs.starfarer.api.input.InputEventAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import modular_fighters.ModularFighterUtils
 import modular_fighters.misc.baseOrModSpec
@@ -55,7 +54,39 @@ class ModularFighterHullmod : BaseHullMod() {
     }
 
     override fun applyEffectsAfterShipCreation(ship: ShipAPI?, id: String?) {
+        var spec = ship?.baseOrModSpec() ?: return
+        var data = ModularFighterUtils.getData().fighterData.get(spec.baseHullId) ?: return
+        var wingSpec = Global.getSettings().getFighterWingSpec(data.fighterWingSpecId) ?: return
+
+        if (data.lastStatsObject.isIndependent) {
+
+            if (ship.isWingLeader) {
+                Global.getCombatEngine()?.addPlugin(FighterIndependenceHmodScript(ship!!, data.lastStatsObject.isIndependentNoReturn))
+            }
+
+        }
 
     }
 
+}
+
+
+class FighterIndependenceHmodScript(var ship: ShipAPI, var noReturn: Boolean) : BaseEveryFrameCombatPlugin() {
+
+    var source: FighterLaunchBayAPI? = null
+    var initated = false
+
+    override fun advance(amount: Float, events: MutableList<InputEventAPI>?) {
+        var wing = ship.wing
+        if (wing != null && !initated && wing.wingMembers.size == wing.spec.numFighters) {
+            initated = true
+            source = wing.source
+            wing.setSourceBay(null)
+        }
+
+        if (!ship.isAlive && source != null && wing != null && !noReturn) {
+            wing.setSourceBay(source)
+            Global.getCombatEngine().removePlugin(this)
+        }
+    }
 }

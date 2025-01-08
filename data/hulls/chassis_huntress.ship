@@ -1,0 +1,98 @@
+{
+  "hullName": "Huntress",
+  "hullId": "chassis_huntress",
+  "hullSize": "FIGHTER",
+  "spriteName": "graphics/chassis/huntress_chassis.png",
+  "style": "MIDLINE",
+  "height": 60,
+  "width": 50,
+  "center": [25, 30],
+  "collisionRadius": 38.5,
+  "shieldCenter": [-1, -0],
+  "shieldRadius": 35.5,
+  "viewOffset": 0,
+  "builtInWeapons": {
+    "WS0003": "huntress_mount_right",
+    "WS0004": "huntress_mount_left",
+    "WS0005": "huntress_side_right",
+    "WS0006": "huntress_side_left"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 0,
+      "locations": [-6, 15]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": -0,
+      "locations": [-6, -15]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": -0,
+      "locations": [-10, -10]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 0,
+      "locations": [-10, 10]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": -0,
+      "locations": [4, -7]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 0,
+      "locations": [4, 7]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-27, -0],
+      "length": 32,
+      "width": 8,
+      "angle": 180,
+      "contrailSize": 64,
+      "style": "MIDLINE"
+    }
+  ],
+  "bounds": [
+    -27, -6,
+    -30.5, -12,
+    -11, -25,
+    -2, -12,
+    27.5, -6,
+    27.5, 6,
+    -2, 12,
+    -11, 25,
+    -30.5, 12,
+    -27, 6
+  ]
+}

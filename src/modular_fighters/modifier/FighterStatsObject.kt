@@ -38,6 +38,7 @@ class FighterStatsObject {
     //var fireRateMult = MutableStat(1f)
 
     var isIndependent = false
+    var isIndependentNoReturn = false
     var attackAtAngle = false
 
 }

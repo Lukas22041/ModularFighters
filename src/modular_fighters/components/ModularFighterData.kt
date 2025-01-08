@@ -235,6 +235,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
             wingSpec.roleDesc = stats.roleDesc
         }
 
+        var test = Global.getSettings().getVariant(chassis.getChassisSpecId() +  "_Hull")
 
         //Hullmods
         fighterSpec.builtInMods.clear()
@@ -250,6 +251,14 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         chassis.getChassisSpec().builtInMods.forEach {
             fighterSpec.addBuiltInMod(it)
             variant.addPermaMod(it)
+        }
+
+
+
+        fighterSpec.builtInWeapons.clear()
+        for (builtin in chassis.getChassisSpec().builtInWeapons) {
+            fighterSpec.addBuiltInWeapon(builtin.key, builtin.value)
+            variant.addWeapon(builtin.key, builtin.value)
         }
     }
 
@@ -286,6 +295,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
 
         //Flux
         ReflectionUtils.invoke("setReactorSpec", spec, ReflectionUtils.invoke("getReactorSpec", chassisSpec))
+
 
 
     }

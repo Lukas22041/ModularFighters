@@ -94,7 +94,9 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
         var numFightersP = tooltip.addPara("${stats.numFighters.modifiedInt}", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
         numFightersP.position.rightOfMid(numFighters as UIComponentAPI, -numFighters.position.width + tooltip.widthSoFar - numFightersP.computeTextWidth(numFightersP.text))
 
-        var refitTimeP = tooltip.addPara("${stats.refitTime.modifiedInt}", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        var refitTimeText = "${stats.refitTime.modifiedInt}"
+        if (stats.refitTime.modifiedInt >= 99999) refitTimeText = "Can not be replaced"
+        var refitTimeP = tooltip.addPara("$refitTimeText", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
         refitTimeP.position.rightOfMid(refitTime as UIComponentAPI, -refitTime.position.width + tooltip.widthSoFar - refitTimeP.computeTextWidth(refitTimeP.text))
 
         var crewText = "${stats.crewPerFighter.modifiedInt}"

@@ -72,7 +72,7 @@ class ChassisSelectorDisplayElement(var chassis: BaseFighterChassis, tooltip: To
         GL20.glUniform1f(GL20.glGetUniformLocation(shader, "alphaMult"), 0.9f + 0.1f * fade)
 
         sprite.setSize(baseW * scale, baseH * scale)
-        sprite.renderAtCenter(x + width / 2 - 1, y + height / 2 - 2)
+        sprite.renderAtCenter(x + width / 2 - 1, y + height / 2 - 1)
 
         GL20.glUseProgram(0)
 
