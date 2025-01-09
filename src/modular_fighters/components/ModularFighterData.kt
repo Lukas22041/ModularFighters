@@ -16,7 +16,7 @@ import org.lazywizard.lazylib.MathUtils
 
 class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
 
-    var chassisId = "chassis_aspect"
+    var chassisId = "chassis_huntress"
     var engineId = "engine_antimatter"
     var subsystemIds = HashMap<Int, String?>()
 

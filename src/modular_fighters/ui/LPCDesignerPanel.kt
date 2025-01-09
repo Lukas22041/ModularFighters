@@ -51,6 +51,7 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
     }
 
     fun recreatePanel() {
+        refitButton.refreshVariant() //Required as otherwise it crashes if a demo is built while a fighter is slotted in.
 
         parent.clearChildren()
 
@@ -713,7 +714,6 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
                 }
 
                 data.applyDataToSpecs()
-                refitButton.refreshVariant() //Required as otherwise it crashes if a demo is built while a fighter is slotted in.
                 recreatePanel()
             }
 
