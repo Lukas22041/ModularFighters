@@ -114,7 +114,7 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
         armorP.position.rightOfMid(armor as UIComponentAPI, -armor.position.width + tooltip.widthSoFar - armorP.computeTextWidth(armorP.text))
 
         if (shield != null) {
-            var shieldP = tooltip.addPara("${chassis.getChassisSpec().fluxCapacity}", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+            var shieldP = tooltip.addPara("${chassis.getChassisSpec().fluxCapacity.toInt()}", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
             shieldP.position.rightOfMid(shield as UIComponentAPI, -shield.position.width + tooltip.widthSoFar - shieldP.computeTextWidth(shieldP.text))
         }
 

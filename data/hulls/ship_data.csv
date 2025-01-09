@@ -1,8 +1,7 @@
 name,id,designation,tech/manufacturer,system id,fleet pts,hitpoints,armor rating,max flux,8/6/5/4%,flux dissipation,ordnance points,fighter bays,max speed,acceleration,deceleration,max turn rate,turn acceleration,mass,shield type,defense id,shield arc,shield upkeep,shield efficiency,phase cost,phase upkeep,min crew,max crew,cargo,fuel,fuel/ly,range,max burn,base value,cr %/day,CR to deploy,peak CR sec,CR loss/sec,supplies/rec,supplies/mo,c/s,c/f,f/s,f/f,crew/s,crew/f,hints,tags,rarity,breakProb,minPieces,maxPieces,travel drive,number
 #Chassis,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Aspect Chassis,chassis_aspect,Fighter,Custom,,,600,300,1000,,200,0,,350,350,350,120,360,50,NONE,,,,,,,0,0,,,,,,,,,,,,,,,,,,,HIDE_IN_CODEX,restricted,,0,,,,100000
-Huntress,chassis_huntress,,Midline,,,500,75,200,,50,0,,300,400,300,150,300,40,NONE,,0,0,0,,,2,2,,,,,,,,,,,,,,,,,,,HIDE_IN_CODEX,restricted,,0,,,,100000
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Huntress,chassis_huntress,,Midline,,,750,100,300,,10,0,,200,400,350,90,180,30,OMNI,,210,0,1,,,1,1,,,,,,,,,,,,,,,,,,,HIDE_IN_CODEX,restricted,,0,,,,100001
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #Placeholder Specs,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Modular Fighter Placeholder,modularFighterSpec0,,Custom,,,750,100,80,,10,100,,200,400,350,90,180,30,NONE,,0,0,0,,,1,1,,,,,,,,,,,,,,,,,,,HIDE_IN_CODEX,restricted,,0,,,,104

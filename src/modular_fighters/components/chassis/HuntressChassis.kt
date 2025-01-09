@@ -25,23 +25,22 @@ class HuntressChassis : BaseFighterChassis() {
     }
 
     override fun addPreTooltip(tooltip: TooltipMakerAPI) {
-        tooltip.addPara("", 0f, Misc.getTextColor(), Misc.getHighlightColor())
+        tooltip.addPara("Tough, agile and versatile, the Huntress-class chassis makes for a solid fighter base for a large variety of potential designs.", 0f, Misc.getTextColor(), Misc.getHighlightColor())
     }
 
     override fun applyStats(stats: FighterStatsObject) {
 
         stats.role = WingRole.FIGHTER
-        stats.opCost.modifyFlat(getId(), 6f)
+        stats.opCost.modifyFlat(getId(), 2f)
 
-        stats.numFighters.modifyFlat(getId(), 2f)
+        stats.numFighters.modifyFlat(getId(), 3f)
         stats.refitTime.modifyFlat(getId(), 10f)
         stats.crewPerFighter.modifyFlat(getId(), 2f)
 
-        //Slightly worse than vanilla aspects
-        stats.hitpoints.modifyFlat(getId(), 500f)
-        stats.armor.modifyFlat(getId(), 75f)
+        stats.hitpoints.modifyFlat(getId(), 750f)
+        stats.armor.modifyFlat(getId(), 100f)
 
-        stats.damageMult.modifyMult(getId(), 0.75f)
+        stats.damageMult.modifyMult(getId(), 1f)
         stats.rangeMult.modifyMult(getId(), 1f)
         stats.speedMult.modifyMult(getId(), 1f)
 
@@ -52,15 +51,15 @@ class HuntressChassis : BaseFighterChassis() {
     }
 
     override fun getOutlineColor1(): Color {
-        return Color(252, 194, 3)
+        return Color(201, 162, 32)
     }
 
     override fun getOutlineColor2(): Color {
-        return Color(252, 194, 3)
+        return Color(201, 162, 32)
     }
 
     override fun getOultineAlpha(): Float {
-        return 0.5f
+        return 0.75f
     }
 
 }

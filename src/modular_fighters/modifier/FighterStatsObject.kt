@@ -7,7 +7,7 @@ import com.fs.starfarer.api.loading.WingRole
 class FighterStatsObject {
 
     var dpCost = MutableStat(0f)
-    var opCost = MutableStat(2f)
+    var opCost = MutableStat(0f)
     var role = WingRole.FIGHTER
     var roleDesc = ""
 

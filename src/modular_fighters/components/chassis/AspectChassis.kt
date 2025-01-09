@@ -31,7 +31,7 @@ class AspectChassis : BaseFighterChassis() {
     override fun applyStats(stats: FighterStatsObject) {
 
         stats.role = WingRole.FIGHTER
-        stats.opCost.modifyFlat(getId(), 8f)
+        stats.opCost.modifyFlat(getId(), 4f)
 
         stats.numFighters.modifyFlat(getId(), 4f)
         stats.refitTime.modifyFlat(getId(), 100000f)

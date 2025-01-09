@@ -17,7 +17,7 @@ import org.lazywizard.lazylib.MathUtils
 class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: String, var variantId: String, var name: String) {
 
     var chassisId = "chassis_aspect"
-    var engineId = "engine_cryomatter"
+    var engineId = "engine_antimatter"
     var subsystemIds = HashMap<Int, String?>()
 
     @Transient private var chassis: BaseFighterChassis? = null
@@ -27,6 +27,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
     //Slot / WeaponSpecId
     var fittedWeapons = HashMap<String, String>()
     var lastStatsObject: FighterStatsObject = FighterStatsObject()
+
 
     init {
         subsystemIds[0] = "debug_subsystem"
@@ -193,7 +194,7 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         }
         highestRange += 50f
         highestRange = MathUtils.clamp(highestRange, 200f, 2000f)
-        if (stats.attackAtAngle) highestRange - 100f
+        if (stats.attackAtAngle) highestRange + 50f
         wingSpec.attackRunRange = highestRange
 
         //Variant Data
@@ -259,6 +260,8 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         for (builtin in chassis.getChassisSpec().builtInWeapons) {
             fighterSpec.addBuiltInWeapon(builtin.key, builtin.value)
             variant.addWeapon(builtin.key, builtin.value)
+            var spec = Global.getSettings().getWeaponSpec(builtin.value)
+            ReflectionUtils.invokeByParameterCount(3,"addWeapon", variant, builtin.key, spec, true)
         }
     }
 

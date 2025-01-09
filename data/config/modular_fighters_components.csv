@@ -7,7 +7,7 @@ chassis_huntress,modular_fighters.components.chassis.HuntressChassis
 ,
 #Engines,
 engine_cryomatter,modular_fighters.components.engines.CryomatterEngine
-,
+engine_antimatter,modular_fighters.components.engines.AntimatterEngine
 ,
 ,
 ,

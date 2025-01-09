@@ -148,6 +148,28 @@ object ReflectionUtils {
         return invokeMethodHandle.invoke(method, instance, arguments)
     }
 
+    fun invokeByParameterCount(count: Int, methodName: String, instance: Any, vararg arguments: Any?) : Any?
+    {
+        var method: Any? = null
+
+        val clazz = instance.javaClass
+        //val args = arguments.map { it!!::class.javaPrimitiveType ?: it::class.java }
+        //val methodType = MethodType.methodType(Void.TYPE, args)
+
+        for (obj: Any in clazz.methods)  {
+            var parameters = ReflectionUtils.invoke("getParameterTypes", obj) as Array<Class<*>>
+            var name = ReflectionUtils.invoke("getName", obj)
+            if (name == methodName && parameters.size == count) {
+                method = obj
+            }
+        }
+        //method = clazz.getDeclaredMethod(methodName, *methodType.parameterArray())
+
+        return invokeMethodHandle.invoke(method, instance, arguments)
+    }
+
+
+
     fun invokeStatic(parameterCount: Int, methodName: String, instance: Class<*>, vararg arguments: Any?) : Any?
     {
         var method: Any? = null

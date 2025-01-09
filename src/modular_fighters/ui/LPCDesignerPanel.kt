@@ -34,7 +34,7 @@ import org.magiclib.kotlin.getStorageCargo
 import modular_fighters.ui.tooltips.ComponentTooltipCreator
 import java.awt.Color
 
-class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
+class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: CustomPanelAPI, var market: MarketAPI?) {
 
     companion object {
         var lastScrollerY = 0f
@@ -712,6 +712,8 @@ class LPCDesignerPanel(var parent: CustomPanelAPI, var market: MarketAPI?) {
                     data.setSubsystemInSlot(slotId, component.getId())
                 }
 
+                data.applyDataToSpecs()
+                refitButton.refreshVariant() //Required as otherwise it crashes if a demo is built while a fighter is slotted in.
                 recreatePanel()
             }
 
