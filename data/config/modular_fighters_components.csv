@@ -3,6 +3,9 @@ id,plugin
 #Chassis,
 chassis_aspect,modular_fighters.components.chassis.AspectChassis
 chassis_huntress,modular_fighters.components.chassis.HuntressChassis
+chassis_bayonet,modular_fighters.components.chassis.BayonetChassis
+chassis_goliath,modular_fighters.components.chassis.GoliathChassis
+chassis_automata,modular_fighters.components.chassis.AutomataChassis
 ,
 ,
 #Engines,

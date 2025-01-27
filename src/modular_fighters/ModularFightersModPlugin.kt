@@ -9,6 +9,7 @@ import modular_fighters.hullmods.NonStandardFighterDesign
 import modular_fighters.misc.ConstantTimeIncreaseScript
 import modular_fighters.misc.ModularFightersRefitButton
 import modular_fighters.ui.LPCDesignerPanel
+import org.lwjgl.util.vector.Vector2f
 
 class ModularFightersModPlugin : BaseModPlugin() {
 
@@ -16,6 +17,13 @@ class ModularFightersModPlugin : BaseModPlugin() {
         ComponentPluginLoader.loadComponentsFromCSV()
 
         LunaRefitManager.addRefitButton(ModularFightersRefitButton())
+
+        /*for (spec in Global.getSettings().allShipHullSpecs.filter { it.hasTag("modular_fighter") }) {
+            for (slot in spec.allWeaponSlotsCopy) {
+                var loc = slot.location
+                slot.location.set(Vector2f(slot.location.x / 2, slot.location.y / 2))
+            }
+        }*/
     }
 
     override fun onGameLoad(newGame: Boolean) {

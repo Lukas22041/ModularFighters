@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.*
 import com.fs.starfarer.api.input.InputEventAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
+import com.fs.starfarer.api.util.Misc
 import modular_fighters.ModularFighterUtils
 import modular_fighters.misc.ReflectionUtils
 import modular_fighters.misc.baseOrModSpec
@@ -68,15 +69,38 @@ class ModularFighterHullmod : BaseHullMod() {
 
         }
 
-       /* for (weapon in ship.allWeapons) {
-            weapon.slot.location.set(Vector2f())
+        for (weapon in ship.allWeapons) {
+            var spec = weapon.spec
+
+            if (spec.type == WeaponAPI.WeaponType.MISSILE || spec.type == WeaponAPI.WeaponType.SYNERGY || spec.type == WeaponAPI.WeaponType.COMPOSITE) {
+
+            }
+            else if (spec.maxAmmo > 0 && spec.maxAmmo != Int.MAX_VALUE && spec.ammoPerSecond == 0f) {
+                weapon.maxAmmo = weapon.spec.maxAmmo / 10
+                weapon.ammo = weapon.maxAmmo
+            }
+        }
+
+        /*var chassisSpec = data.getChassis().getChassisSpec()
+        for (weapon in ship.allWeapons) {
+
+           // weapon.slot.location.set(Vector2f())
+            weapon.slot
+            weapon.ensureClonedSpec()
             weapon.sprite.setSize(weapon.sprite.width / 2f, weapon.sprite.width / 2f)
+
+            var originalSlot = chassisSpec.getWeaponSlot(weapon.slot.id)
+
+            for (slot in ship.hullSpec.allWeaponSlotsCopy) {
+                slot.location.set(Vector2f(originalSlot.location.x / 2, originalSlot.location.y / 2))
+            }
         }*/
 
     }
 
     override fun advanceInCombat(ship: ShipAPI?, amount: Float) {
-
+       /* ReflectionUtils.set("isAnimatedLaunch", ship!!, true)
+        ReflectionUtils.set("sinceLaunch", ship!!, 0.5f)*/
     }
 
 }

@@ -2,13 +2,18 @@ package modular_fighters.ui
 
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.econ.MarketAPI
-import com.fs.starfarer.api.combat.WeaponAPI
+import com.fs.starfarer.api.combat.*
+import com.fs.starfarer.api.fleet.FleetGoal
 import com.fs.starfarer.api.fleet.FleetMemberType
+import com.fs.starfarer.api.impl.campaign.ids.Factions
+import com.fs.starfarer.api.input.InputEventAPI
 import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.CustomPanelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
+import com.fs.starfarer.campaign.CampaignEngine
+import com.fs.starfarer.combat.CombatFleetManager
 import com.fs.starfarer.ui.impl.StandardTooltipV2
 import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import lunalib.lunaExtensions.addLunaElement
@@ -32,6 +37,8 @@ import org.lazywizard.lazylib.ext.rotate
 import org.lwjgl.util.vector.Vector2f
 import org.magiclib.kotlin.getStorageCargo
 import modular_fighters.ui.tooltips.ComponentTooltipCreator
+import org.lazywizard.lazylib.ext.campaign.addShip
+import org.lwjgl.input.Keyboard
 import java.awt.Color
 
 class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: CustomPanelAPI, var market: MarketAPI?) {
@@ -387,75 +394,64 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
             position.inTL(width - finishBWidth - 10f, height - finishBHeight - 10f)
         }
 
-        //Preview Button
-
-        var previewButtonWidth = 30f
-        var previewButtonHeight = 30f
+        var simBWidth = 120f
+        var simBHeigh = 30f
         //Complete Design/Craft Button
-        var previewButton = element.addLunaElement(previewButtonWidth, previewButtonHeight).apply {
+        var simButton = element.addLunaElement(simBWidth, simBHeigh).apply {
             enableTransparency = true
             borderAlpha = 0.7f
             backgroundAlpha = 0.25f
 
+            if (market == null) {
+                backgroundColor = Misc.getDarkPlayerColor().darker().darker().darker()
+                backgroundAlpha = 0.5f
+            }
+
             onClick {
+                if (market == null) {
+                    playSound("ui_char_can_not_increase_skill_or_aptitude", 1f, 1f)
+                    return@onClick
+                }
+
                 playClickSound()
+
+                data.applyDataToSpecs()
+
+                recreatePanel()
+
+                startSimulation(data.fighterWingSpecId)
             }
 
             onHoverEnter {
                 playSound("ui_button_mouseover", 1f, 1f)
                 backgroundAlpha = 0.6f
+                if (market == null) {
+                    backgroundAlpha = 0.7f
+                }
             }
             onHoverExit {
                 backgroundAlpha = 0.25f
+                if (market == null) {
+                    backgroundAlpha = 0.5f
+                }
             }
 
             innerElement.setParaFont("graphics/fonts/victor14.fnt")
-            var textPara = innerElement.addPara("*", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
-            textPara!!.position.inTL(previewButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2, previewButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+            var textPara = innerElement.addPara("Simulation", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(simBWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, simBHeigh / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
 
             position.leftOfTop(finishButton.elementPanel, 5f)
         }
 
-        var wingMember = Global.getFactory().createFleetMember(FleetMemberType.FIGHTER_WING, data.fighterWingSpecId)
-        var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
-        var weaponDesc = ReflectionUtils.invokeStatic(2, "createFleetMemberTooltipPreDeploy", StandardTooltipV2::class.java, wingMember, Global.getSector().playerPerson.stats) as StandardTooltipV2
-        ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, previewButton.elementPanel, weaponDesc, 150f)
+        element.addTooltip(simButton.elementPanel, TooltipMakerAPI.TooltipLocation.ABOVE, 350f) { tooltip ->
 
-        previewButton.onHoverEnter {
-            data.applyDataToSpecs() //Update before each hover.
-            ReflectionUtils.set("index", weaponDesc, 1)
+            tooltip.addPara("Opens up a simulation with an invincible Drover-class, carrying two of the currently edited fighter wings. The opponent is an Enforcer-class destroyer. Your ship is ignored by the enemy AI.")
+
+            if (market == null) {
+                tooltip.addSpacer(10f)
+                tooltip.addNegativePara("Can only be opened while docked to a market.")
+            }
         }
-
-
-
-        //Help Button
-        var helpButtonWidth = 30f
-        var helpButtonHeight = 30f
-        //Complete Design/Craft Button
-        var helpButton = element.addLunaElement(helpButtonWidth, helpButtonHeight).apply {
-            enableTransparency = true
-            borderAlpha = 0.7f
-            backgroundAlpha = 0.25f
-
-            onClick {
-                playClickSound()
-            }
-
-            onHoverEnter {
-                playSound("ui_button_mouseover", 1f, 1f)
-                backgroundAlpha = 0.6f
-            }
-            onHoverExit {
-                backgroundAlpha = 0.25f
-            }
-
-            innerElement.setParaFont("graphics/fonts/victor14.fnt")
-            var textPara = innerElement.addPara("?", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
-            textPara!!.position.inTL(helpButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, helpButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
-
-            position.leftOfTop(previewButton.elementPanel, 5f)
-        }
-
 
         //Name Field
 
@@ -494,6 +490,75 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
         }
 
 
+
+        //Preview Button
+
+        var previewButtonWidth = 25f
+        var previewButtonHeight = 25f
+        //Complete Design/Craft Button
+        var previewButton = element.addLunaElement(previewButtonWidth, previewButtonHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+            }
+
+            onHoverEnter {
+                playSound("ui_button_mouseover", 1f, 1f)
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            innerElement.setParaFont("graphics/fonts/victor14.fnt")
+            var textPara = innerElement.addPara("*", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(previewButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2, previewButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+
+            position.leftOfTop(nameField.elementPanel, 5f)
+        }
+
+        var wingMember = Global.getFactory().createFleetMember(FleetMemberType.FIGHTER_WING, data.fighterWingSpecId)
+        var memberStats = Global.getSector().playerFleet.fleetData.membersListCopy.first().stats
+        var weaponDesc = ReflectionUtils.invokeStatic(2, "createFleetMemberTooltipPreDeploy", StandardTooltipV2::class.java, wingMember, Global.getSector().playerPerson.stats) as StandardTooltipV2
+        ReflectionUtils.invokeStatic(3, "addTooltipLeft", StandardTooltipV2Expandable::class.java, previewButton.elementPanel, weaponDesc, 150f)
+
+        previewButton.onHoverEnter {
+            data.applyDataToSpecs() //Update before each hover.
+            ReflectionUtils.set("index", weaponDesc, 1)
+        }
+
+
+
+        //Help Button
+        var helpButtonWidth = 25f
+        var helpButtonHeight = 25f
+        //Complete Design/Craft Button
+        var helpButton = element.addLunaElement(helpButtonWidth, helpButtonHeight).apply {
+            enableTransparency = true
+            borderAlpha = 0.7f
+            backgroundAlpha = 0.25f
+
+            onClick {
+                playClickSound()
+            }
+
+            onHoverEnter {
+                playSound("ui_button_mouseover", 1f, 1f)
+                backgroundAlpha = 0.6f
+            }
+            onHoverExit {
+                backgroundAlpha = 0.25f
+            }
+
+            innerElement.setParaFont("graphics/fonts/victor14.fnt")
+            var textPara = innerElement.addPara("?", 0f, Misc.getBasePlayerColor(), Misc.getBasePlayerColor())
+            textPara!!.position.inTL(helpButtonWidth / 2 - textPara!!.computeTextWidth(textPara!!.text) / 2 - 1, helpButtonHeight / 2 - textPara!!.computeTextHeight(textPara!!.text) / 2)
+
+            position.leftOfTop(previewButton.elementPanel, 5f)
+        }
 
 
 
@@ -649,7 +714,7 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
         var data = selectedFighter
 
         var pWidth = 350f
-        var pHeight = 400f
+        var pHeight = 370f
 
         var components = ComponentPluginLoader.getAllComponents()
         if (componentType == BaseFighterComponent.ComponentType.CHASSIS) components = components.filter { it is BaseFighterChassis }
@@ -731,6 +796,82 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
 
         popupPanel.position.inTL(mountElement.x, 0f)*/
 
+    }
+
+
+
+    fun startSimulation(wingId: String)
+    {
+        var fakePlayerFleet = Global.getFactory().createEmptyFleet(Factions.PLAYER, "Test", true)
+        Global.getSector().playerFleet.containingLocation.addEntity(fakePlayerFleet)
+        fakePlayerFleet.setCircularOrbit(Global.getSector().playerFleet, 0.1f, 0.1f, 0.1f)
+
+        var member = fakePlayerFleet.addShip("drover_Hull", FleetMemberType.SHIP)
+        var variant = member.variant
+
+        variant.setWingId(0, wingId)
+        variant.setWingId(1, wingId)
+
+        variant.numFluxVents = 300
+        variant.numFluxCapacitors = 300
+
+        var enemyFleet = Global.getFactory().createEmptyFleet(Factions.HEGEMONY, "Test", true)
+        var enemyMember = enemyFleet.addShip("enforcer_Balanced", FleetMemberType.SHIP)
+
+
+        val bcc = BattleCreationContext(fakePlayerFleet, FleetGoal.ATTACK, enemyFleet, FleetGoal.ATTACK)
+        bcc.aiRetreatAllowed = false
+        bcc.objectivesAllowed = false
+        bcc.standoffRange = 500f
+
+        /*var state = AppDriver.getInstance().currentState as CampaignState
+        state.startBattle(bcc)*/
+        CampaignEngine.getInstance().getCampaignUI().startBattle(bcc)
+
+        Global.getSector().playerFleet.containingLocation.removeEntity(fakePlayerFleet)
+
+        Global.getCombatEngine().addPlugin( object : EveryFrameCombatPlugin {
+
+            override fun init(engine: CombatEngineAPI?) {
+            }
+
+            override fun processInputPreCoreControls(amount: Float, events: MutableList<InputEventAPI>?) {
+                events!!.forEach {
+                    if (it.isConsumed) return@forEach
+                    if (it.isKeyDownEvent && it.eventValue == Keyboard.KEY_ESCAPE)
+                    {
+                        if (Global.getCombatEngine()?.isCombatOver == false) {
+                            Global.getCombatEngine().endCombat(0f)
+                            //it.consume()
+                        }
+                    }
+                }
+            }
+
+            override fun advance(amount: Float, events: MutableList<InputEventAPI>?) {
+                var playership = Global.getCombatEngine().playerShip
+                playership.mutableStats.armorDamageTakenMult.modifyMult("modFighters_sim", 0f)
+                playership.mutableStats.hullDamageTakenMult.modifyMult("modFighters_sim", 0f)
+
+                /*var playerManager = Global.getCombatEngine().getFleetManager(0) as CombatFleetManager
+
+                for (member in playerManager.campaignFleet.members) {
+                    playerManager.retreated.add(member)
+                }
+
+                //ReflectionUtils.invoke("setCampaignFleet", playerManager, fakePlayerFleet)*/
+            }
+
+            override fun renderInWorldCoords(viewport: ViewportAPI?) {
+
+            }
+
+            override fun renderInUICoords(viewport: ViewportAPI?) {
+
+            }
+
+        })
+        // Global.getCombatEngine().endCombat(10f)
     }
 
 }

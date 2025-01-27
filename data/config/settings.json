@@ -1,0 +1,8 @@
+ {
+	 
+	 "plugins":{		
+		#"SCSkillPanelReplacerTitle":"second_in_command.scripts.SkillPanelReplacerScriptTitlescreen",
+		"ModularFightersCombatHandler":"modular_fighters.misc.CombatHandler",
+	},	
+	
+ }

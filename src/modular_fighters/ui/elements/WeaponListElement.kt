@@ -1,18 +1,14 @@
 package modular_fighters.ui.elements
 
 import com.fs.starfarer.api.Global
-import com.fs.starfarer.api.input.InputEventAPI
+import com.fs.starfarer.api.combat.WeaponAPI.WeaponType
 import com.fs.starfarer.api.loading.WeaponSpecAPI
 import com.fs.starfarer.api.ui.Fonts
-import com.fs.starfarer.api.ui.LabelAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
 import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaUI.elements.LunaElement
-import modular_fighters.components.ModularFighterData
 import org.lazywizard.lazylib.MathUtils
-import org.lwjgl.input.Keyboard
-import kotlin.math.min
 
 class WeaponListElement(var mount: WeaponMountElement, var spec: WeaponSpecAPI, quanity: Int, tooltip: TooltipMakerAPI, width: Float, height: Float) : LunaElement(tooltip, width, height) {
 
@@ -45,9 +41,26 @@ class WeaponListElement(var mount: WeaponMountElement, var spec: WeaponSpecAPI, 
         var anchor4 = innerElement.addLunaElement(0f, 0f)
         anchor4.position.belowLeft(anchor3.elementPanel, quantityPara.computeTextHeight(quantityPara.text) + 2f)
 
+        var extraParaText = "In your cargo holds"
+        var extraParaColor = Misc.getGrayColor()
+
+        if (spec.type == WeaponType.MISSILE || spec.type == WeaponType.SYNERGY || spec.type == WeaponType.COMPOSITE) {
+            if (spec.ammoPerSecond > 0) {
+                extraParaText = "Reloadable - No Restocking"
+                extraParaColor = Misc.getPositiveHighlightColor()
+            }
+        }
+        else {
+            if (spec.maxAmmo > 0 && spec.maxAmmo != Int.MAX_VALUE && spec.ammoPerSecond == 0f) {
+                extraParaText = "Limited Ammo (${(spec.maxAmmo / 10).toInt()})"
+                extraParaColor = Misc.getNegativeHighlightColor()
+            }
+        }
+
+
         innerElement.setParaFont(Fonts.VICTOR_10)
-        var cargoPara = innerElement.addPara("In your cargo holds", 0f, Misc.getGrayColor(), Misc.getGrayColor())
-        cargoPara.position.rightOfTop(anchor4.elementPanel, 0f)
+        var extraPara = innerElement.addPara(extraParaText, 0f,extraParaColor, extraParaColor)
+        extraPara.position.rightOfTop(anchor4.elementPanel, 0f)
 
         var anchor5 = innerElement.addLunaElement(0f, 0f)
         var ordnanceTextPara = innerElement.addPara("Ordnance Points", 0f, Misc.getGrayColor(), Misc.getGrayColor())

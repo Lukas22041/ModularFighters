@@ -47,9 +47,15 @@ class AspectChassis : BaseFighterChassis() {
 
         stats.baseValue.modifyFlat(getId(), 4000f)
 
+        stats.deceleration.modifyMult(getId(), 0.75f) //As fighters suck with turret mounts
+
         stats.isIndependent = true
         stats.isIndependentNoReturn = true
 
+    }
+
+    override fun getOultineAlpha(): Float {
+        return 0.75f
     }
 
 }

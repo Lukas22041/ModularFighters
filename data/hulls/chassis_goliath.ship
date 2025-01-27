@@ -1,0 +1,143 @@
+{
+  "hullName": "Goliath",
+  "hullId": "chassis_goliath",
+  "hullSize": "FIGHTER",
+  "spriteName": "graphics/chassis/goliath_chassis.png",
+  "style": "LOW_TECH",
+  "height": 56,
+  "width": 56,
+  "center": [28, 28],
+  "collisionRadius": 46.5,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 40,
+  "viewOffset": 0,
+  "builtInWeapons": {
+    "WS0004": "goliath_mount_cover_left",
+    "WS0005": "goliath_mount_cover_right",
+    "WS0006": "goliath_nose_cover"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "HARDPOINT",
+      "arc": 10,
+      "angle": 0,
+      "locations": [12, 14]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "HARDPOINT",
+      "arc": 10,
+      "angle": -0,
+      "locations": [12, -14]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 270,
+      "angle": -0,
+      "locations": [-17, -0]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": -0,
+      "locations": [3, 14]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 0,
+      "locations": [3, -14]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": -0,
+      "locations": [12, -0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-27, 14],
+      "length": 24,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-27, -14],
+      "length": 24,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-27, -13.5],
+      "length": 14,
+      "width": 8,
+      "angle": 155,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-27, 13.5],
+      "length": 14,
+      "width": 8,
+      "angle": -155,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-27, -14.5],
+      "length": 14,
+      "width": 8,
+      "angle": -155,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-27, 14.5],
+      "length": 14,
+      "width": 8,
+      "angle": 155,
+      "contrailSize": 64,
+      "style": "LOW_TECH"
+    }
+  ],
+  "bounds": [
+    -27, -18.5,
+    -18.5, -18.5,
+    0.5, -27,
+    25.5, -22.5,
+    26.5, -19,
+    16, -18,
+    17.5, -9,
+    24.5, -5.5,
+    24.5, 5.5,
+    17.5, 9,
+    16, 18,
+    26.5, 19,
+    25.5, 22.5,
+    0.5, 27,
+    -18.5, 18.5,
+    -27, 18.5
+  ]
+}
