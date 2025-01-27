@@ -5,7 +5,9 @@ import com.fs.starfarer.api.combat.*
 import com.fs.starfarer.api.input.InputEventAPI
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import modular_fighters.ModularFighterUtils
+import modular_fighters.misc.ReflectionUtils
 import modular_fighters.misc.baseOrModSpec
+import org.lwjgl.util.vector.Vector2f
 
 class ModularFighterHullmod : BaseHullMod() {
 
@@ -65,6 +67,15 @@ class ModularFighterHullmod : BaseHullMod() {
             }
 
         }
+
+       /* for (weapon in ship.allWeapons) {
+            weapon.slot.location.set(Vector2f())
+            weapon.sprite.setSize(weapon.sprite.width / 2f, weapon.sprite.width / 2f)
+        }*/
+
+    }
+
+    override fun advanceInCombat(ship: ShipAPI?, amount: Float) {
 
     }
 
