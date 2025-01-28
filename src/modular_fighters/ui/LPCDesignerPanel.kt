@@ -287,6 +287,11 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
 
             var subsystemChooser = LPCSlotElement(subsystemAngle, Vector2f(panel.position.x + subsystemPosition.x, panel.position.y + subsystemPosition.y), element, 42f, 42f)
             subsystemChooser.position.inTL(subsystemBoxPosition.x, subsystemBoxPosition.y)
+
+            element.addTooltip(subsystemChooser.elementPanel, TooltipMakerAPI.TooltipLocation.ABOVE, 400f) {tooltip ->
+                tooltip.addTitle("Subsystem")
+                tooltip.addPara("[Subsystems are not yet available in this version of the mod]")
+            }
         }
 
 

@@ -3,6 +3,7 @@ package modular_fighters.hullmods
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.*
 import com.fs.starfarer.api.input.InputEventAPI
+import com.fs.starfarer.api.loading.WingRole
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
 import modular_fighters.ModularFighterUtils
@@ -33,6 +34,10 @@ class ModularFighterHullmod : BaseHullMod() {
             wingSpec.addTag("match_leader_facing")
             wingSpec.addTag("attack_at_an_angle")
             wingSpec.addTag("independent_of_carrier")
+        }
+
+        if (data.lastStatsObject.role == WingRole.BOMBER) {
+            wingSpec.tags.add("bomber")
         }
 
         stats.ballisticWeaponDamageMult.modifyMult(id, data.lastStatsObject.damageMult.modifiedValue)

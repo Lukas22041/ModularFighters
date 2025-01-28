@@ -11,14 +11,20 @@
   "shieldCenter": [-1, -0],
   "shieldRadius": 42.5,
   "viewOffset": 0,
-  "builtInWeapons": {
-    "WS0004": "automata_deco_left",
-    "WS0005": "automata_deco_right"
-  },
   "builtInMods": [
     "automated",
     "turretgyros"
   ],
+  "builtInWeapons": {
+    "WS0004": "automata_deco_left",
+    "WS0005": "automata_deco_right",
+    "WS0006": "modular_fighters_engine_box",
+    "WS0007": "modular_fighters_engine_pos",
+    "WS0008": "modular_fighters_subsystem_box",
+    "WS0009": "modular_fighters_subsystem_pos",
+    "WS0010": "modular_fighters_subsystem_box",
+    "WS0011": "modular_fighters_subsystem_pos"
+  },
   "weaponSlots": [
     {
       "id": "WS0001",
@@ -64,6 +70,60 @@
       "arc": 0,
       "angle": -0,
       "locations": [9, -10]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": -73.5,
+      "locations": [-67, 79]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": -0,
+      "locations": [-28, -0]
+    },
+    {
+      "id": "WS0008",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 154.5,
+      "locations": [47, -56.5]
+    },
+    {
+      "id": "WS0009",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": -40.5,
+      "locations": [15, -5]
+    },
+    {
+      "id": "WS0010",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 144.5,
+      "locations": [29.5, -89.5]
+    },
+    {
+      "id": "WS0011",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": -90,
+      "locations": [-11, -22]
     }
   ],
   "engineSlots": [

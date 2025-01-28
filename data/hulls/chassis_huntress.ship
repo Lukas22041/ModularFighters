@@ -15,7 +15,9 @@
     "WS0003": "huntress_mount_right",
     "WS0004": "huntress_mount_left",
     "WS0005": "huntress_side_right",
-    "WS0006": "huntress_side_left"
+    "WS0006": "huntress_side_left",
+    "WS0007": "modular_fighters_engine_box",
+    "WS0008": "modular_fighters_engine_pos"
   },
   "weaponSlots": [
     {
@@ -71,6 +73,24 @@
       "arc": 10,
       "angle": 0,
       "locations": [4, 7]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 74,
+      "locations": [-55, -42.5]
+    },
+    {
+      "id": "WS0008",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 10,
+      "angle": 180,
+      "locations": [-25, -0]
     }
   ],
   "engineSlots": [

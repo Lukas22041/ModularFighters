@@ -166,6 +166,10 @@ class ModularFighterData(var fighterSpecId: String, var fighterWingSpecId: Strin
         //Wing Data
         wingSpec.tags.clear() //Clear Tags just in case
 
+        if (stats.role == WingRole.BOMBER) {
+            wingSpec.tags.add("bomber")
+        }
+
         wingSpec.numFighters = stats.numFighters.modifiedValue.toInt()
         wingSpec.refitTime = stats.refitTime.modifiedValue
 
