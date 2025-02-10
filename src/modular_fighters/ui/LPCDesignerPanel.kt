@@ -102,7 +102,6 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
             renderBorder = false
             backgroundColor = Color(20, 20, 20, 75)
             position.inTL(0f, 0f)
-
         }
 
 
@@ -254,11 +253,20 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
             engineAngle = engineSlot.angle + 90f
         }
 
+        var engine = data.getEngine()
 
-        var engineChooser = LPCSlotElement(engineAngle, Vector2f(panel.position.x + enginePosition.x, panel.position.y + enginePosition.y), element, 92f, 42f)
+        var engineChooser = LPCSlotElement(engineAngle, Vector2f(panel.position.x + enginePosition.x, panel.position.y + enginePosition.y), element, 42f, 42f)
         engineChooser.position.inTL(engineBoxPosition.x, engineBoxPosition.y)
 
+        var engineSlotDisplayer = EngineSelectorDisplayElement(engine, element, 42f, 42f)
+        engineSlotDisplayer.position.inTL(engineBoxPosition.x, engineBoxPosition.y)
 
+        element.addTooltipTo(ComponentTooltipCreator(engine), engineSlotDisplayer.elementPanel, TooltipMakerAPI.TooltipLocation.LEFT)
+
+        engineSlotDisplayer.onClick {
+            engineSlotDisplayer.playClickSound()
+            openComponentPicker(BaseFighterComponent.ComponentType.ENGINE, panel, element, engineSlotDisplayer, 0)
+        }
 
         //Subsystem Slot Elements
         var subsystemSlotPositionsData = builtins.filter { it.second == "modular_fighters_subsystem_pos" }
@@ -719,7 +727,7 @@ class LPCDesignerPanel(var refitButton: ModularFightersRefitButton, var parent: 
         var data = selectedFighter
 
         var pWidth = 350f
-        var pHeight = 370f
+        var pHeight = 380f
 
         var components = ComponentPluginLoader.getAllComponents()
         if (componentType == BaseFighterComponent.ComponentType.CHASSIS) components = components.filter { it is BaseFighterChassis }

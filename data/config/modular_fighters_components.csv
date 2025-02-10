@@ -3,6 +3,7 @@ id,plugin
 #Chassis,
 chassis_aspect,modular_fighters.components.chassis.AspectChassis
 chassis_huntress,modular_fighters.components.chassis.HuntressChassis
+chassis_valkyrie,modular_fighters.components.chassis.ValkyrieChassis
 chassis_bayonet,modular_fighters.components.chassis.BayonetChassis
 chassis_goliath,modular_fighters.components.chassis.GoliathChassis
 chassis_automata,modular_fighters.components.chassis.AutomataChassis
@@ -11,7 +12,7 @@ chassis_automata,modular_fighters.components.chassis.AutomataChassis
 #Engines,
 engine_cryomatter,modular_fighters.components.engines.CryomatterEngine
 engine_antimatter,modular_fighters.components.engines.AntimatterEngine
-,
+engine_antimatter_antique,modular_fighters.components.engines.AntiqueAntimatterEngine
 ,
 ,
 ,

@@ -3,7 +3,7 @@
 	"name":"Modular Fighters", # Displayed to the player
 	"author":"Lukas04",
     "utility":"false",
-	"version":"1.0.0",
+	"version":"1.0.0-Dev1",
 	"description":"Enables the creation of fully customised fighters.",
     "gameVersion": "0.97a-RC10",
   	"jars":["jars/ModularFighters.jar"],

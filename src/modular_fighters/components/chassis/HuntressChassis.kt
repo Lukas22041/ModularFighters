@@ -5,6 +5,7 @@ import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin
 import com.fs.starfarer.api.combat.FighterLaunchBayAPI
 import com.fs.starfarer.api.combat.ShipAPI
 import com.fs.starfarer.api.input.InputEventAPI
+import com.fs.starfarer.api.loading.FormationType
 import com.fs.starfarer.api.loading.WingRole
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
@@ -31,6 +32,7 @@ class HuntressChassis : BaseFighterChassis() {
     override fun applyStats(stats: FighterStatsObject) {
 
         stats.role = WingRole.FIGHTER
+        stats.formation = FormationType.V
         stats.opCost.modifyFlat(getId(), 2f)
 
         stats.numFighters.modifyFlat(getId(), 3f)

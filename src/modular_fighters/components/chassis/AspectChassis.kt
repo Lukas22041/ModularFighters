@@ -5,6 +5,7 @@ import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin
 import com.fs.starfarer.api.combat.FighterLaunchBayAPI
 import com.fs.starfarer.api.combat.ShipAPI
 import com.fs.starfarer.api.input.InputEventAPI
+import com.fs.starfarer.api.loading.FormationType
 import com.fs.starfarer.api.loading.WingRole
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
@@ -31,6 +32,7 @@ class AspectChassis : BaseFighterChassis() {
     override fun applyStats(stats: FighterStatsObject) {
 
         stats.role = WingRole.FIGHTER
+        stats.formation = FormationType.BOX
         stats.opCost.modifyFlat(getId(), 4f)
 
         stats.numFighters.modifyFlat(getId(), 4f)
@@ -41,7 +43,7 @@ class AspectChassis : BaseFighterChassis() {
         stats.hitpoints.modifyFlat(getId(), 1000f)
         stats.armor.modifyFlat(getId(), 400f)
 
-        stats.damageMult.modifyMult(getId(), 0.75f)
+        stats.damageMult.modifyMult(getId(), 1f)
         stats.rangeMult.modifyMult(getId(), 1f)
         stats.speedMult.modifyMult(getId(), 1.2f)
 
@@ -51,6 +53,7 @@ class AspectChassis : BaseFighterChassis() {
 
         stats.isIndependent = true
         stats.isIndependentNoReturn = true
+        stats.attackAtAngle = true
 
     }
 

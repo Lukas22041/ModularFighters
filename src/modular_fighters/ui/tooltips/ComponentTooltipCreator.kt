@@ -10,6 +10,8 @@ import com.fs.starfarer.api.util.Misc
 import com.fs.starfarer.ui.impl.StandardTooltipV2Expandable
 import modular_fighters.components.BaseFighterComponent
 import modular_fighters.components.chassis.BaseFighterChassis
+import modular_fighters.components.engines.BaseFighterEngine
+import modular_fighters.components.subsystems.BaseFighterSubsystem
 import modular_fighters.modifier.FighterStatsObject
 
 class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltipCreator() {
@@ -33,8 +35,8 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
         tooltip.addSpacer(10f)
 
         if (component is BaseFighterChassis) addChassisTooltip(tooltip)
-        if (component is BaseFighterChassis) addEngineTooltip(tooltip)
-        if (component is BaseFighterChassis) addComponentTooltip(tooltip)
+        if (component is BaseFighterEngine) addEngineTooltip(tooltip)
+        if (component is BaseFighterSubsystem) addComponentTooltip(tooltip)
 
         tooltip.addSpacer(10f)
         component.addPostTooltip(tooltip)
@@ -78,10 +80,9 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
         tooltip.addSpacer(10f)
 
         var independent = tooltip.addPara("Can fly independently", 0f) as UIComponentAPI
+        var angle = tooltip.addPara("Attacks at an angle", 0f) as UIComponentAPI
 
         var height = tooltip.heightSoFar
-
-
 
         //Text
         var roleP = tooltip.addPara("${stats.role.name.lowercase().capitalize()}", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
@@ -137,9 +138,19 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
         var independentP = tooltip.addPara(indepText, 0f, indepColor, indepColor )
         independentP.position.rightOfMid(independent as UIComponentAPI, -independent.position.width + tooltip.widthSoFar - independentP.computeTextWidth(independentP.text))
 
+        var angleText = "No"
+        var angleColor = Misc.getNegativeHighlightColor()
+        if (stats.attackAtAngle) {
+            angleText = "Yes"
+            angleColor = Misc.getPositiveHighlightColor()
+        }
+
+        var angleP = tooltip.addPara(angleText, 0f, angleColor, angleColor )
+        angleP.position.rightOfMid(angle as UIComponentAPI, -angle.position.width + tooltip.widthSoFar - angleP.computeTextWidth(angleP.text))
+
 
         if (tooltip is StandardTooltipV2Expandable) {
-           tooltip.heightSoFar = height
+           tooltip.heightSoFar = height - 10f
         }
 
         //tooltip.addPara("", 0f).position.inTL(5f, height)
@@ -147,7 +158,48 @@ class ComponentTooltipCreator(var component: BaseFighterComponent) : BaseTooltip
     }
 
     fun addEngineTooltip(tooltip: TooltipMakerAPI) {
+        tooltip.addSectionHeading("Engine Stats", Alignment.MID, 0f)
+        tooltip.addSpacer(10f)
 
+        var engine = component as BaseFighterEngine
+
+        var stats = FighterStatsObject()
+        component.applyStats(stats)
+
+        var topSpeed = stats.topSpeed.modifiedInt
+        var acceleration = stats.acceleration.modifiedInt
+        var deceleration = stats.deceleration.modifiedInt
+        var turnRate = stats.maxTurnRate.modifiedInt
+        var turnAcceleration = stats.turnAcceleration.modifiedInt
+
+        var topSpeedPara = tooltip.addPara("Top Speed", 0f) as UIComponentAPI
+        tooltip.addSpacer(10f)
+        var accelerationPara = tooltip.addPara("Acceleration", 0f) as UIComponentAPI
+        var decelerationPara = tooltip.addPara("Deceleration", 0f) as UIComponentAPI
+        tooltip.addSpacer(10f)
+        var maxTurnRatePara = tooltip.addPara("Max Turn rate", 0f) as UIComponentAPI
+        var turnAccelerationPara = tooltip.addPara("Turn Acceleration", 0f) as UIComponentAPI
+
+        var height = tooltip.heightSoFar
+
+        var topSpeedParaN = tooltip.addPara("$topSpeed", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        topSpeedParaN.position.rightOfMid(topSpeedPara as UIComponentAPI, -topSpeedPara.position.width + tooltip.widthSoFar - topSpeedParaN.computeTextWidth(topSpeedParaN.text))
+
+        var accelerationParaN = tooltip.addPara("$acceleration", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        accelerationParaN.position.rightOfMid(accelerationPara as UIComponentAPI, -accelerationPara.position.width + tooltip.widthSoFar - accelerationParaN.computeTextWidth(accelerationParaN.text))
+
+        var decelerationParaN = tooltip.addPara("$deceleration", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        decelerationParaN.position.rightOfMid(decelerationPara as UIComponentAPI, -decelerationPara.position.width + tooltip.widthSoFar - decelerationParaN.computeTextWidth(decelerationParaN.text))
+
+        var maxTurnRateParaN = tooltip.addPara("$turnRate", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        maxTurnRateParaN.position.rightOfMid(maxTurnRatePara as UIComponentAPI, -maxTurnRatePara.position.width + tooltip.widthSoFar - maxTurnRateParaN.computeTextWidth(maxTurnRateParaN.text))
+
+        var turnAccelerationRateParaN = tooltip.addPara("$turnAcceleration", 0f, Misc.getHighlightColor(), Misc.getHighlightColor() )
+        turnAccelerationRateParaN.position.rightOfMid(turnAccelerationPara as UIComponentAPI, -turnAccelerationPara.position.width + tooltip.widthSoFar - turnAccelerationRateParaN.computeTextWidth(turnAccelerationRateParaN.text))
+
+        if (tooltip is StandardTooltipV2Expandable) {
+            tooltip.heightSoFar = height - 10f
+        }
     }
 
     fun addComponentTooltip(tooltip: TooltipMakerAPI) {

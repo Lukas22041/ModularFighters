@@ -3,4 +3,11 @@ id,variant,tags,tier,rarity,fleet pts,op cost,formation,range,attackRunRange,att
 modularFighterSpec0_wing,modularFighterSpec0_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
 modularFighterSpec1_wing,modularFighterSpec1_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
 modularFighterSpec2_wing,modularFighterSpec2_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec3_wing,modularFighterSpec3_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec4_wing,modularFighterSpec4_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec5_wing,modularFighterSpec5_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec6_wing,modularFighterSpec6_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec7_wing,modularFighterSpec7_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec8_wing,modularFighterSpec8_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
+modularFighterSpec9_wing,modularFighterSpec9_variant,,0,,5,10,V,4000,600,,3,FIGHTER,Placeholder,10,5000,,,,,,,,,,,,,50000
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,

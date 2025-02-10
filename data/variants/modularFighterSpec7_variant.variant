@@ -1,0 +1,14 @@
+{
+  "variantId": "modularFighterSpec7_variant",
+  "hullId": "modularFighterSpec7",
+  "displayName": "Custom",
+  "goalVariant": false,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [],
+  "modules": [],
+  "wings": []
+}

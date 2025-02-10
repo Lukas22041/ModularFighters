@@ -12,57 +12,57 @@ import com.fs.starfarer.api.util.Misc
 import modular_fighters.modifier.FighterStatsObject
 import java.awt.Color
 
-class AutomataChassis : BaseFighterChassis() {
+class ValkyrieChassis : BaseFighterChassis() {
     override fun getChassisSpecId(): String {
-       return "chassis_automata"
+       return "chassis_valkyrie"
     }
 
     override fun getName(): String {
-        return "Automata Chassis"
+        return "Valkyrie Chassis"
     }
 
     override fun getDesignType(): String {
-        return "Remnant"
+        return "Midline"
     }
 
     override fun addPreTooltip(tooltip: TooltipMakerAPI) {
-        tooltip.addPara("The automata is a class of its own, capable of acting entirely independently of its host ship.", 0f, Misc.getTextColor(), Misc.getHighlightColor())
+        tooltip.addPara("The valkyrie uses quick maneuvers to overwhelm its target, performing attack runs from a further distance to stay out of the range of fire.", 0f, Misc.getTextColor(), Misc.getHighlightColor())
     }
 
     override fun applyStats(stats: FighterStatsObject) {
 
         stats.role = WingRole.FIGHTER
         stats.formation = FormationType.V
-        stats.opCost.modifyFlat(getId(), 4f)
+        stats.opCost.modifyFlat(getId(), 3f)
 
-        stats.numFighters.modifyFlat(getId(), 1f)
-        stats.refitTime.modifyFlat(getId(), 15f)
-        stats.crewPerFighter.modifyFlat(getId(), 0f)
+        stats.numFighters.modifyFlat(getId(), 2f)
+        stats.refitTime.modifyFlat(getId(), 10f)
+        stats.crewPerFighter.modifyFlat(getId(), 2f)
 
-        stats.hitpoints.modifyFlat(getId(), 750f)
-        stats.armor.modifyFlat(getId(), 120f)
+        stats.hitpoints.modifyFlat(getId(), 600f)
+        stats.armor.modifyFlat(getId(), 80f)
 
-        stats.damageMult.modifyMult(getId(), 1.5f)
+        stats.damageMult.modifyMult(getId(), 1.25f)
         stats.rangeMult.modifyMult(getId(), 1f)
-        stats.speedMult.modifyMult(getId(), 0.8f)
+        stats.speedMult.modifyMult(getId(), 1.25f)
 
         stats.baseValue.modifyFlat(getId(), 1000f)
 
-        stats.isIndependent = true
+        stats.isIndependent = false
         stats.attackAtAngle = true
 
     }
 
     override fun getOutlineColor1(): Color {
-        return Color(3, 252, 186)
+        return Color(30, 30, 30)
     }
 
     override fun getOutlineColor2(): Color {
-        return Color(3, 252, 186)
+        return Color(30, 30, 30)
     }
 
     override fun getOultineAlpha(): Float {
-        return 0.33f
+        return 0.75f
     }
 
 }

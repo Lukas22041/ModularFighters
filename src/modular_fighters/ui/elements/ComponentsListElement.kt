@@ -9,6 +9,8 @@ import lunalib.lunaExtensions.addLunaElement
 import lunalib.lunaUI.elements.LunaElement
 import modular_fighters.components.BaseFighterComponent
 import modular_fighters.components.chassis.BaseFighterChassis
+import modular_fighters.components.engines.BaseFighterEngine
+import modular_fighters.misc.getAndLoadSprite
 import modular_fighters.modifier.FighterStatsObject
 import org.lazywizard.lazylib.MathUtils
 import kotlin.math.min
@@ -28,6 +30,10 @@ class ComponentsListElement(var stats: FighterStatsObject, var component: BaseFi
 
         if (component is BaseFighterChassis) {
             sprite = Global.getSettings().getSprite((component as BaseFighterChassis).getChassisSpec().spriteName)
+        }
+
+        if (component is BaseFighterEngine) {
+            sprite = Global.getSettings().getAndLoadSprite((component as BaseFighterEngine).getEngineIcon())
         }
 
         if (sprite != null) {
@@ -53,6 +59,10 @@ class ComponentsListElement(var stats: FighterStatsObject, var component: BaseFi
         var midPara = innerElement.addPara("", 0f)
         if (component is BaseFighterChassis) {
             midPara = innerElement.addPara("${stats.role.name.lowercase().capitalize()} Chassis", 0f, Misc.getHighlightColor(), Misc.getHighlightColor(), "")
+            midPara.position.rightOfTop(anchor3.elementPanel, 0f)
+        }
+        if (component is BaseFighterEngine) {
+            midPara = innerElement.addPara("Fighter Engine", 0f, Misc.getHighlightColor(), Misc.getHighlightColor(), "")
             midPara.position.rightOfTop(anchor3.elementPanel, 0f)
         }
 

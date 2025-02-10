@@ -19,7 +19,9 @@
     "WS0007": "bayonet_wing_root_left",
     "WS0008": "bayonet_wing_root_right",
     "WS0009": "bayonet_cover_center",
-    "WS0010": "bayonet_engine_cover"
+    "WS0010": "bayonet_engine_cover",
+    "WS0011": "modular_fighters_engine_box",
+    "WS0012": "modular_fighters_engine_pos"
   },
   "weaponSlots": [
     {
@@ -111,6 +113,24 @@
       "arc": 0,
       "angle": 0,
       "locations": [-10, -0]
+    },
+    {
+      "id": "WS0011",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 70.5,
+      "locations": [-57, -30.5]
+    },
+    {
+      "id": "WS0012",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 0,
+      "locations": [-21, -0]
     }
   ],
   "engineSlots": [
